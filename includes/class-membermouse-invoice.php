@@ -394,6 +394,7 @@ class MemberMouse_Invoice
         {
             $email->setSubject("[TEST] ".$emailSubject);
             $email->setToAddress($this->testEmail);
+            $email->disableLogging();
         }
         else 
         {   
