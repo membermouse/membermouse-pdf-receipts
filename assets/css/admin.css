@@ -1,0 +1,16 @@
+
+#adminmenu #toplevel_page_membermouse_pdf_invoices_settings .wp-menu-image img {
+    width: 22px;
+}
+
+#wpwrap {
+	background-color: #fff;
+}
+
+.ui-widget {
+	font-size: 1em;
+}
+
+textarea, input, select {
+	font-size: 11px;
+}

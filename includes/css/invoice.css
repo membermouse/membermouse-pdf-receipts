@@ -1,0 +1,95 @@
+.pdf-container {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1;
+  font-size: 10px;
+}
+
+p {
+  margin: 0;
+}
+
+.title-row {
+  text-align: center;
+  border-top: 4px solid #066cd2;
+  padding-top: 20px;
+}
+
+.invoice-table {
+  border: 1px solid #000;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.invoice-top {
+  padding: 10px;
+}
+
+.invoice-top:after {
+  content: ".";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.invoice-info,
+.invoice-date {
+  width: 50%;
+  float: left;
+}
+
+.invoice-date,
+.invoice-top-extra {
+  text-align: right;
+}
+
+.invoice-top-extra {
+  padding: 0 10px 10px;
+}
+
+.invoice-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table table th {
+  padding: 5px 10px;
+  background: #f7f7f7;
+}
+
+.invoice-table table td {
+  padding: 5px 10px;
+  vertical-align: middle;
+}
+
+.invoice-table table tr {
+  height: 55px;
+}
+
+.invoice-table table tr:nth-of-type(2n+2) {
+  background: #f7f7f7;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.total-paid-td {
+  border-top: 3px solid #000;
+  border-bottom: 1px solid #ddd;
+}
+
+.total-paid-td.first {
+  border-left: 1px solid #ddd;
+}
+
+.invoice-footer {
+  margin-top: 40px;
+  text-align: center;
+  border-bottom: 4px solid #066cd2;
+  padding-bottom: 20px;
+}
