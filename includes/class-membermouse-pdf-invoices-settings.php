@@ -350,8 +350,7 @@ class MemberMouse_PDF_Invoices_Settings
 						<?php $activityLogURL = MM_ModuleUtils::getUrl(MM_MODULE_LOGS, MM_MODULE_ACTIVITY_LOG); ?>
 						
 						<p>An email with a PDF invoice attached will be sent to MemberMouse members when an initial or rebill payment occurs.
-						All emails sent by this plugin will be logged in the MemberMouse <a href="<?php echo $activityLogURL; ?>" target="_blank">activity log</a>. 
-						You can send a preview of the email and PDF invoice by sending a test below.</p>
+						All emails sent by this plugin will be logged in the MemberMouse <a href="<?php echo $activityLogURL; ?>" target="_blank">activity log</a>.</p>
 						
 						<form method='post'>
 						<input name="mm_pdf_email_test" type="hidden" value="1" />
