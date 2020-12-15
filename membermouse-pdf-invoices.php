@@ -7,7 +7,7 @@
  * Author: MemberMouse, LLC
  * Author URI: https://membermouse.com
  * Requires at least: 4.0
- * Tested up to: 5.5
+ * Tested up to: 5.6
  *
  * Text Domain: membermouse-pdf-invoices
  * Domain Path: /lang/
