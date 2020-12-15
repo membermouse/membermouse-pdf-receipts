@@ -13,3 +13,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
+delete_option("mm-pdf-email-test-email");
+delete_option("mm-pdf-email-from");
+delete_option("mm-pdf-email-subject");
+delete_option("mm-pdf-email-body");
+delete_option("mm-pdf-email-billing-custom-field-id");
+delete_option("mm-pdf-business-name");
+delete_option("mm-pdf-business-address");
+delete_option("mm-pdf-business-tax-label");
+delete_option("mm-pdf-business-tax-id");
+delete_option("mm-pdf-footer-section-1");
+delete_option("mm-pdf-footer-section-2");
+?>
