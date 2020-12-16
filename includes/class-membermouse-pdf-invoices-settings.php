@@ -413,7 +413,7 @@ class MemberMouse_PDF_Invoices_Settings
 						<h2>PDF Configuration</h2>
 						<input name="mm_pdf_configuration" type="hidden" value="1" />
 						
-						<p><a href="javascript:insertPDFConfigTemplate(false);">Set the Default Configuration</a></p>
+						<p><a href="javascript:insertPDFConfigTemplate(false);">Insert the Default Configuration</a></p>
 						
 						<p><strong>Business Information</strong></p>
 						<div style="margin-left:10px;">
@@ -422,6 +422,9 @@ class MemberMouse_PDF_Invoices_Settings
 								style="width: 300px; font-family: courier; font-size: 11px;"
 								value="<?php echo htmlentities($businessName, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
 								placeholder="Business Name" />
+						</p>
+						<p>
+							<?php echo MM_Utils::getIcon('info-circle', 'blue', '1.3em', '2px'); ?> <em>use <code>&lt;br/&gt;</code> tags for new lines.</em>
 						</p>
 						<p>
 						<textarea id="mm-business-address" name="mm_business_address"
@@ -508,7 +511,7 @@ class MemberMouse_PDF_Invoices_Settings
 					<div style="margin-left: 20px;">
 						<h2>Email Template</h2>
 						<input name="mm_pdf_email_template" type="hidden" value="1" />
-						<p><a href="javascript:insertEmailTemplate(false);">Set the Default Email Template</a></p>
+						<p><a href="javascript:insertEmailTemplate(false);">Insert the Default Email Template</a></p>
 						
 						<p>
 		<?php echo _mmt("From"); ?>
