@@ -22,6 +22,8 @@ class MemberMouse_Invoice
     private $lname = "";
 
     private $email = "";
+    
+    private $ccEmail = "";
 
     private $address1 = "";
 
@@ -175,6 +177,20 @@ class MemberMouse_Invoice
         if(!empty($billingCustomFieldId) && isset($data['cf_'.$billingCustomFieldId]))
         {
             $this->extra_info = nl2br($data['cf_'.$billingCustomFieldId]);
+        }
+        
+        $emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
+        
+        if(!empty($emailCCFieldId) && isset($data['cf_'.$emailCCFieldId]))
+        {
+            $this->ccEmail = trim($data['cf_'.$emailCCFieldId]);
+            
+            // validate email
+            if (!filter_var($this->ccEmail, FILTER_VALIDATE_EMAIL)) 
+            {
+                // invalid email. clear it. 
+                $this->ccEmail = "";
+            }
         }
     }
 
@@ -385,6 +401,12 @@ class MemberMouse_Invoice
         $email->setBody($emailBody);
         $email->setFromName($fromEmployee->getDisplayName());
         $email->setFromAddress($fromEmployee->getEmail());
+        
+        if(!empty($this->ccEmail))
+        {
+            $email->addCC($this->ccEmail);
+        }
+        
         $email->setAttachments(array(
             $pdfPath
         ));
