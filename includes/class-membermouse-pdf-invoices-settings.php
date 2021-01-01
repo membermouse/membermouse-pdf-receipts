@@ -177,6 +177,10 @@ class MemberMouse_PDF_Invoices_Settings
                 update_option("mm-pdf-email-from", $_POST["mm_from_email"]);
             }
             
+            if (isset($_POST["mm_email_cc_id"])) {
+                update_option("mm-pdf-email-cc-field-id", $_POST["mm_email_cc_id"]);
+            }
+            
             if (isset($_POST["mm_email_subject"])) {
                 update_option("mm-pdf-email-subject", stripslashes($_POST["mm_email_subject"]));
             }
@@ -231,6 +235,7 @@ class MemberMouse_PDF_Invoices_Settings
         $invoiceFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         
         $emailFromId = get_option("mm-pdf-email-from", false);
+        $emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
 
         // set default email from ID
         if (empty($emailFromId)) {
@@ -471,7 +476,7 @@ class MemberMouse_PDF_Invoices_Settings
                 		below that will store billing details. When generating the PDF, if the customer has entered data into this field, 
                 		then it will be used instead of the Name, Email Address and Billing Address present on the order.</p>
                 		<?php
-                            $customFieldsList = $this->getTextAreaCustomFields();
+                		    $customFieldsList = $this->getCustomFields("text");
                             $customFieldsURL = MM_ModuleUtils::getUrl(MM_MODULE_CHECKOUT_SETTINGS, MM_MODULE_CUSTOM_FIELDS);
                             
                             if (count($customFieldsList) > 0) {
@@ -522,6 +527,36 @@ class MemberMouse_PDF_Invoices_Settings
             $employeesUrl = MM_ModuleUtils::getUrl(MM_MODULE_GENERAL_SETTINGS, MM_MODULE_EMPLOYEES);
             ?>
 		<a href="<?php echo $employeesUrl ?>" target="_blank"><?php echo _mmt("manage employees");?></a>
+						</p>
+						<p>
+						<?php echo _mmt("CC"); ?>
+                		<div style="margin-left:10px;">
+                		<p>You can allow the customer to enter an email address to CC on PDF invoice emails. To do this, select a custom field 
+                		below that will store the email address to CC.</p>
+                		<?php
+                		    $customFieldsList = $this->getCustomFields("input");
+                            $customFieldsURL = MM_ModuleUtils::getUrl(MM_MODULE_CHECKOUT_SETTINGS, MM_MODULE_CUSTOM_FIELDS);
+                            
+                            if (count($customFieldsList) > 0) {
+                                $customFieldValues = MM_HtmlUtils::generateSelectionsList($customFieldsList, $emailCCFieldId);
+                        ?>
+                		<p>
+                			<select name="mm_email_cc_id" class="medium-text">
+                			<?php echo $customFieldValues ?>
+                			</select>
+                			&nbsp;
+                    		<a href="<?php echo $customFieldsURL ?>" target="_blank"><?php echo _mmt("configure custom fields");?></a>
+						</p>
+						<p>
+                			<?php echo MM_Utils::getIcon('info-circle', 'blue', '1.3em', '2px'); ?> NOTE: <em>only 'Short Text' custom fields will appear in the dropdown above</em>
+						</p>
+						<?php } else { ?>
+						<p>
+							<?php echo MM_Utils::getIcon('info-circle', 'yellow', '1.3em', '2px'); ?>
+							No custom fields with the type <em>Long Text</em> have been created. 
+							<a href="<?php echo $customFieldsURL ?>" target="_blank"><?php echo _mmt("Configure custom fields");?></a>.
+						</p>
+						<?php } ?>
 						</p>
 						<p>
 							<input id="mm-email-subject" name="mm_email_subject" type="text"
@@ -587,11 +622,11 @@ class MemberMouse_PDF_Invoices_Settings
 <?php
     }
 
-    private function getTextAreaCustomFields()
+    private function getCustomFields($type)
     {
         global $wpdb;
 
-        $sql = "SELECT * FROM " . MM_TABLE_CUSTOM_FIELDS . " WHERE is_hidden = '0' AND type = 'text' ORDER BY id ASC;";
+        $sql = "SELECT * FROM " . MM_TABLE_CUSTOM_FIELDS . " WHERE is_hidden = '0' AND type = '{$type}' ORDER BY id ASC;";
         $results = $wpdb->get_results($sql);
 
         $list = array();
