@@ -22,7 +22,21 @@ class MemberMouse_PDF_Receipts_Settings
      */
     private static $_instance = null;
 
-    // phpcs:ignore
+    private $error = "";
+    private $mmPluginCheck = false;
+    private $mmVersionCheck = false;
+    private $emailTemplateCheck = false;
+    private $pdfConfigCheck = false;
+    private $pdfInvoicingActive = false;
+    private $emailCCFieldId = "";
+    private $emailFromId = "";
+    private $billingCustomFieldId = "";
+    private $businessName = "";
+    private $businessAddress = "";
+    private $businessTaxLabel = "";
+    private $businessTaxId = "";
+    private $receiptFooterSection1 = "";
+    private $receiptFooterSection2 = "";
 
     /**
      * The main plugin object.
@@ -151,26 +165,33 @@ class MemberMouse_PDF_Receipts_Settings
      */
     public function settings_page()
     {
+        $selectedTab = 'config';
+        
+        if(isset($_GET['tab']) && $_GET['tab'])
+        {
+            $selectedTab = $_GET['tab'];
+        }
+        
         // Send Test
         if (isset($_POST["mm_pdf_email_test"]) && $_POST["mm_pdf_email_test"] == "1") {
             include (plugin_dir_path(__FILE__) . 'class-membermouse-receipt.php');
-
+            
             if (empty($_POST["mm_pdf_email_test_email"])) {
-                $error = "Test email address required.";
+                $this->error = "Test email address required";
             } else {
-                $testEmail = $_POST["mm_pdf_email_test_email"];
-                update_option("mm-pdf-email-test-email", $testEmail);
+                $this->testEmail = $_POST["mm_pdf_email_test_email"];
+                update_option("mm-pdf-email-test-email", $this->testEmail);
                 $pdfReceiptGenerator = MemberMouse_Receipt::get_instance();
-                $response = $pdfReceiptGenerator->sendTest($testEmail);
-
+                $response = $pdfReceiptGenerator->sendTest($this->testEmail);
+                
                 if (MM_Response::isSuccess($response)) {
-                    $error = "Test sent successfully.";
+                    $this->error = "Test sent successfully";
                 } else {
-                    $error = $response->message;
+                    $this->error = $response->message;
                 }
             }
         }
-
+        
         // Email Template
         if (isset($_POST["mm_pdf_email_template"]) && $_POST["mm_pdf_email_template"] == "1") {
             if (isset($_POST["mm_from_email"])) {
@@ -189,7 +210,7 @@ class MemberMouse_PDF_Receipts_Settings
                 update_option("mm-pdf-email-body", stripslashes($_POST["mm_email_body"]));
             }
             
-            $error = "Email template saved successfully.";
+            $this->error = "Email template saved successfully";
         }
         
         // PDF Configuration
@@ -222,44 +243,172 @@ class MemberMouse_PDF_Receipts_Settings
                 update_option("mm-pdf-footer-section-2", stripslashes($_POST["mm_footer_section_2"]));
             }
             
-            $error = "PDF configuration saved successfully.";
+            $this->error = "PDF configuration saved successfully";
         }
-
-        // get data
-        $billingCustomFieldId = get_option("mm-pdf-email-billing-custom-field-id", false);
-        $businessName = get_option("mm-pdf-business-name", false);
-        $businessAddress = get_option("mm-pdf-business-address", false);
-        $businessTaxLabel = get_option("mm-pdf-business-tax-label", false);
-        $businessTaxId = get_option("mm-pdf-business-tax-id", false);
-        $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
-        $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         
-        $emailFromId = get_option("mm-pdf-email-from", false);
-        $emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
-
+        // get data
+        $this->billingCustomFieldId = get_option("mm-pdf-email-billing-custom-field-id", false);
+        $this->businessName = get_option("mm-pdf-business-name", false);
+        $this->businessAddress = get_option("mm-pdf-business-address", false);
+        $this->businessTaxLabel = get_option("mm-pdf-business-tax-label", false);
+        $this->businessTaxId = get_option("mm-pdf-business-tax-id", false);
+        $this->receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
+        $this->receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
+        
+        $this->emailFromId = get_option("mm-pdf-email-from", false);
+        $this->emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
+        
         // set default email from ID
-        if (empty($emailFromId)) {
+        if (empty($this->emailFromId)) {
             $dfltEmployee = MM_Employee::getDefault();
             update_option("mm-pdf-email-from", $dfltEmployee->getId());
         }
         
-        $emailSubject = get_option("mm-pdf-email-subject", false);
-        $emailBody = get_option("mm-pdf-email-body", false);
-        $testEmail = get_option("mm-pdf-email-test-email", false);
+        $this->emailSubject = get_option("mm-pdf-email-subject", false);
+        $this->emailBody = get_option("mm-pdf-email-body", false);
+        $this->testEmail = get_option("mm-pdf-email-test-email", false);
         
         // Activate PDF Invoicing
-        $mmPluginCheck = is_plugin_active("membermouse/index.php");
-        $mmVersionCheck = false;
+        $this->mmPluginCheck = is_plugin_active("membermouse/index.php");
+        $this->mmVersionCheck = false;
         
-        if($mmPluginCheck)
+        if($this->mmPluginCheck)
         {
             $crntVersion = MemberMouse::getPluginVersion();
-            $mmVersionCheck = version_compare($crntVersion, '2.4.0', '>=');
+            $this->mmVersionCheck = version_compare($crntVersion, '2.4.0', '>=');
         }
         
-        $emailTemplateCheck = (!empty($emailSubject) && !empty($emailBody) && !empty($emailFromId)) ? true : false;
-        $pdfConfigCheck = (!empty($businessName) && !empty($businessAddress)) ? true : false;
-        $pdfInvoicingActive = ($mmPluginCheck && $mmVersionCheck && $emailTemplateCheck && $pdfConfigCheck) ? true : false;
+        $this->emailTemplateCheck = (!empty($this->emailSubject) && !empty($this->emailBody) && !empty($this->emailFromId)) ? true : false;
+        $this->pdfConfigCheck = (!empty($this->businessName) && !empty($this->businessAddress)) ? true : false;
+        $this->pdfInvoicingActive = ($this->mmPluginCheck && $this->mmVersionCheck && $this->emailTemplateCheck && $this->pdfConfigCheck) ? true : false;        
+        ?>
+<style>
+.mm-ui-button {
+	padding: 10px 12px;
+	font-size: 12px !important;
+}
+</style>
+<div class="mm-wrap" id="<?php echo $this->parent->_token.'_settings' ?>">
+	<div style="margin-bottom: 10px;">
+		<img
+			src="<?php echo plugins_url("../assets/images/", __FILE__)."/mm-pdf-receipts.png"; ?>"
+			style="vertical-align: middle; margin-top: 20px;" />
+	</div>
+	
+	<?php if ($this->mmPluginCheck && $this->mmVersionCheck) { ?>
+	
+	<?php if($this->pdfInvoicingActive) { ?>
+	<div class="mm-navbar" style="margin-bottom:10px;"><ul>
+        <li> 
+		<a href="<?php echo add_query_arg(array('tab' => 'config')); ?>" class='<?php echo ($selectedTab == 'config' ? "active":""); ?>'>
+			<i class="fa fa-cog"></i>
+			<?php echo _mmt("Configure");?>
+		</a>
+		</li>
+		<li> 
+		<a href="<?php echo add_query_arg(array('tab' => 'test')); ?>" class='<?php echo ($selectedTab == 'test' ? "active":""); ?>'>
+			<i class="fa fa-flask"></i>
+			<?php echo _mmt("Send Test");?>
+		</a>
+		</li>
+		<li> 
+		<a href="<?php echo add_query_arg(array('tab' => 'resend')); ?>" class='<?php echo ($selectedTab == 'resend' ? "active":""); ?>'>
+			<i class="fa fa-send"></i>
+			<?php echo _mmt("Resend Receipt");?>
+		</a>
+		</li>
+		
+		<li> 
+		<a href="<?php echo add_query_arg(array('tab' => 'info')); ?>" class='<?php echo ($selectedTab == 'info' ? "active":""); ?>'>
+			<i class="fa fa-info-circle"></i> <?= _mmt("Info"); ?>
+		</a>
+		</li>
+	</ul></div>
+	<?php } ?>
+	
+	<?php if (!$this->pdfInvoicingActive) { ?>
+	<div style="margin-top: 20px;">
+		<div style="margin-left: 10px; width: 700px;">
+			<div class="updated" style="padding: 10px; border-left-color: #690">
+				<div style="margin-left: 20px;">
+					<h3>
+						<i class="fa fa-times" style="color: #c00"></i> PDF Invoicing Not Active
+					</h3>
+					
+					<p style="font-size:14px;">
+						<strong>Complete the following in order to activate PDF invoicing:</strong>
+					</p>
+					
+					<p style="font-size:14px;">
+					<?php if ($this->pdfConfigCheck) { ?>
+					<i class="fa fa-check-square-o" style="color: #690"></i>
+					<?php } else { ?>
+					<i class="fa fa-square-o"></i> 
+					<?php } ?>
+					Configure the PDF content below or <a href="javascript:insertPDFConfigTemplate(true);">use the default configuration</a>.
+					</p>
+					
+					<p style="font-size:14px;">
+					<?php if ($this->emailTemplateCheck) { ?>
+					<i class="fa fa-check-square-o" style="color: #690"></i>
+					<?php } else { ?>
+					<i class="fa fa-square-o"></i> 
+					<?php } ?>
+					Configure the email template below or <a href="javascript:insertEmailTemplate(true);">use the default template</a>.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+     
+    <?php   
+        switch($selectedTab)
+        {
+            case 'config':
+                $this->render_config_tab();
+                break;
+                
+            case 'test':
+                $this->render_test_tab();
+                break;
+                
+            case 'resend':
+                $this->render_resend_tab();
+                break;
+                
+            case 'info':
+                $this->render_info_tab();
+                break;
+        }
+        ?>
+        
+	<script type='text/javascript'>
+    <?php if(!empty($this->error)){ ?>
+    alert('<?php echo $this->error; ?>');
+    <?php  } ?>
+    </script>
+    
+    <?php } else { ?>
+	<div class="error" style="padding: 10px; width: 600px;">
+	<?php if(!$this->mmPluginCheck) { ?>
+		The <a href="https://membermouse.com">MemberMouse plugin</a> must be active in order to use this plugin.
+	<?php } else if(!$this->mmVersionCheck) { ?>
+		MemberMouse 2.4.0 or above is required to use this plugin. <a href="https://hub.membermouse.com/download.php">Download the latest version</a> and 
+		<a href="https://support.membermouse.com/support/solutions/articles/9000020393-manually-upgrading-membermouse" target="_blank">follow these instructions</a> to upgrade.
+	<?php } ?>
+	</div>
+	<?php } ?>
+        
+	</div>
+	<?php
+    }
+    
+    /** 
+     * This function renders the configuration and testing tab content
+     */
+    public function render_config_tab()
+    {
         ?>
 		<script>
 		function insertPDFConfigTemplate(doSubmit)
@@ -325,97 +474,16 @@ class MemberMouse_PDF_Receipts_Settings
         	}
         }
         </script>
-<style>
-.mm-ui-button {
-	padding: 10px 12px;
-	font-size: 12px !important;
-}
-</style>
-<div class="mm-wrap" id="<?php echo $this->parent->_token.'_settings' ?>">
-	<div style="margin-bottom: 10px;">
-		<img
-			src="<?php echo plugins_url("../assets/images/", __FILE__)."/mm-pdf-receipts.png"; ?>"
-			style="vertical-align: middle; margin-top: 20px;" />
-	</div>
-		
-		<?php if ($mmPluginCheck && $mmVersionCheck) { ?>
 		
 		<div style="margin-top: 20px;">
 		<div style="margin-left: 10px; width: 700px;">
-			
-			<!-- ACTIVATION SECTION -->
-			<div class="updated" style="padding: 10px; border-left-color: #690">
-				
-					<div style="margin-left: 20px;">
-						<?php if ($pdfInvoicingActive) { ?>
-						<h3>
-    						<i class="fa fa-check" style="color: #690"></i> PDF Receipts Active
-    					</h3>
-						
-						<?php $activityLogURL = MM_ModuleUtils::getUrl(MM_MODULE_LOGS, MM_MODULE_ACTIVITY_LOG); ?>
-						
-						<p>An email with a PDF receipt attached will be sent to MemberMouse members when an initial or rebill payment occurs.
-						All emails sent by this plugin will be logged in the MemberMouse <a href="<?php echo $activityLogURL; ?>" target="_blank">activity log</a>.</p>
-						
-						<form method='post'>
-						<input name="mm_pdf_email_test" type="hidden" value="1" />
-						<p>
-							<strong>Send test to the following email address:</strong>
-						</p>
-						<p>
-							<input name="mm_pdf_email_test_email" type="text"
-								style="width: 251px; font-family: courier; font-size: 11px;"
-								value="<?php echo htmlentities($testEmail, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
-								placeholder="" />
-						</p>
-
-						<p>
-                			<?php echo MM_Utils::getIcon('info-circle', 'yellow', '1.3em', '2px'); ?> WordPress Mail (i.e. <code>wp_mail()</code>
-							) is used to send emails. Be sure it is configured correctly to
-							send emails by using a plugin like <a
-								href="https://wordpress.org/plugins/wp-mail-smtp/"
-								target="_blank">WP Mail SMTP</a>.
-						</p>
-						
-						<input type='submit' value='Send Test' class="mm-ui-button green" />
-						</form>
-						<?php } else { ?>
-						<h3>
-    						<i class="fa fa-times" style="color: #c00"></i> PDF Invoicing Not Active
-    					</h3>
-    					
-    					<p style="font-size:14px;">
-    						<strong>Complete the following in order to activate PDF invoicing:</strong>
-    					</p>
-    					
-    					<p style="font-size:14px;">
-    					<?php if ($pdfConfigCheck) { ?>
-						<i class="fa fa-check-square-o" style="color: #690"></i>
-						<?php } else { ?>
-						<i class="fa fa-square-o"></i> 
-						<?php } ?>
-						Configure the PDF content below or <a href="javascript:insertPDFConfigTemplate(true);">use the default configuration</a>.
-						</p>
-						
-    					<p style="font-size:14px;">
-						<?php if ($emailTemplateCheck) { ?>
-						<i class="fa fa-check-square-o" style="color: #690"></i>
-						<?php } else { ?>
-						<i class="fa fa-square-o"></i> 
-						<?php } ?>
-						Configure the email template below or <a href="javascript:insertEmailTemplate(true);">use the default template</a>.
-						</p>
-						<?php } ?>
-					</div>
-			</div>
-			<!-- END ACTIVATION SECTION -->
 			
 			<!-- PDF CONFIG -->
 			<div class="updated"
 				style="padding: 10px; border-left-color: #066cd2">
 				<form id="mm-pdf-config-form"  method='post'>
 					<div style="margin-left: 20px;">
-						<h2>PDF Configuration</h2>
+						<h2>PDF Receipt Configuration</h2>
 						<input name="mm_pdf_configuration" type="hidden" value="1" />
 						
 						<p><a href="javascript:insertPDFConfigTemplate(false);">Insert the Default Configuration</a></p>
@@ -425,7 +493,7 @@ class MemberMouse_PDF_Receipts_Settings
 						<p>
 							<input id="mm-business-name" name="mm_business_name" type="text"
 								style="width: 300px; font-family: courier; font-size: 11px;"
-								value="<?php echo htmlentities($businessName, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
+								value="<?php echo htmlentities($this->businessName, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
 								placeholder="Business Name" />
 						</p>
 						<p>
@@ -434,18 +502,18 @@ class MemberMouse_PDF_Receipts_Settings
 						<p>
 						<textarea id="mm-business-address" name="mm_business_address"
 							style="width: 300px; font-family: courier; font-size: 11px;"
-							rows="5"><?php echo htmlentities($businessAddress, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="5"><?php echo htmlentities($this->businessAddress, ENT_QUOTES, 'UTF-8', true); ?></textarea>
                 		</p>
 						<p>
 							<input id="mm-business-tax-label" name="mm_business_tax_label" type="text"
 								style="width: 300px; font-family: courier; font-size: 11px;"
-								value="<?php echo htmlentities($businessTaxLabel, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
+								value="<?php echo htmlentities($this->businessTaxLabel, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
 								placeholder="Business Tax Label" /> (<em>optional</em>)
 						</p>
 						<p>
 							<input id="mm-business-tax-id" name="mm_business_tax_id" type="text"
 								style="width: 300px; font-family: courier; font-size: 11px;"
-								value="<?php echo htmlentities($businessTaxId, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
+								value="<?php echo htmlentities($this->businessTaxId, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
 								placeholder="Business Tax ID" /> (<em>optional</em>)
 						</p>
 						</div>
@@ -457,14 +525,14 @@ class MemberMouse_PDF_Receipts_Settings
 						<p>
 						<textarea id="mm-footer-section-1" name="mm_footer_section_1"
 							style="width: 500px; font-family: courier; font-size: 11px;"
-							rows="8"><?php echo htmlentities($receiptFooterSection1, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="8"><?php echo htmlentities($this->receiptFooterSection1, ENT_QUOTES, 'UTF-8', true); ?></textarea>
                 		</p>
                 		
                 		<p>Area 2</p>
 						<p>
 						<textarea id="mm-footer-section-2" name="mm_footer_section_2"
 							style="width: 500px; font-family: courier; font-size: 11px;"
-							rows="6"><?php echo htmlentities($receiptFooterSection2, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="6"><?php echo htmlentities($this->receiptFooterSection2, ENT_QUOTES, 'UTF-8', true); ?></textarea>
                 		</p>
                 		</div>
                 		</div>
@@ -480,7 +548,7 @@ class MemberMouse_PDF_Receipts_Settings
                             $customFieldsURL = MM_ModuleUtils::getUrl(MM_MODULE_CHECKOUT_SETTINGS, MM_MODULE_CUSTOM_FIELDS);
                             
                             if (count($customFieldsList) > 0) {
-                                $customFieldValues = MM_HtmlUtils::generateSelectionsList($customFieldsList, $billingCustomFieldId);
+                                $customFieldValues = MM_HtmlUtils::generateSelectionsList($customFieldsList, $this->billingCustomFieldId);
                         ?>
                 		<p>
                 			<select name="mm_billing_custom_field" class="medium-text">
@@ -514,14 +582,14 @@ class MemberMouse_PDF_Receipts_Settings
 			<div class="updated" style="padding: 10px; border-left-color: #f80">
 				<form id="mm-email-template-form" method='post'>
 					<div style="margin-left: 20px;">
-						<h2>Email Template</h2>
+						<h2>Email Template Configuration</h2>
 						<input name="mm_pdf_email_template" type="hidden" value="1" />
 						<p><a href="javascript:insertEmailTemplate(false);">Insert the Default Email Template</a></p>
 						
 						<p>
 		<?php echo _mmt("From"); ?>
 		<select name="mm_from_email" class="medium-text">
-		<?php echo MM_HtmlUtils::getEmployees($emailFromId); ?>
+		<?php echo MM_HtmlUtils::getEmployees($this->emailFromId); ?>
 		</select>
 		<?php
             $employeesUrl = MM_ModuleUtils::getUrl(MM_MODULE_GENERAL_SETTINGS, MM_MODULE_EMPLOYEES);
@@ -538,7 +606,7 @@ class MemberMouse_PDF_Receipts_Settings
                             $customFieldsURL = MM_ModuleUtils::getUrl(MM_MODULE_CHECKOUT_SETTINGS, MM_MODULE_CUSTOM_FIELDS);
                             
                             if (count($customFieldsList) > 0) {
-                                $customFieldValues = MM_HtmlUtils::generateSelectionsList($customFieldsList, $emailCCFieldId);
+                                $customFieldValues = MM_HtmlUtils::generateSelectionsList($customFieldsList, $this->emailCCFieldId);
                         ?>
                 		<p>
                 			<select name="mm_email_cc_id" class="medium-text">
@@ -561,7 +629,7 @@ class MemberMouse_PDF_Receipts_Settings
 						<p>
 							<input id="mm-email-subject" name="mm_email_subject" type="text"
 								style="width: 510px; font-family: courier; font-size: 11px;"
-								value="<?php echo htmlentities($emailSubject, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
+								value="<?php echo htmlentities($this->emailSubject, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
 								placeholder="Email Subject" />
 						</p>
 						<p>
@@ -585,7 +653,7 @@ class MemberMouse_PDF_Receipts_Settings
 						</p>
 						<textarea id="mm-email-body" name="mm_email_body"
 							style="width: 515px; font-family: courier; font-size: 11px;"
-							rows="15"><?php echo htmlentities($emailBody, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="15"><?php echo htmlentities($this->emailBody, ENT_QUOTES, 'UTF-8', true); ?></textarea>
 						<p>
                 			<?php echo MM_Utils::getIcon('paperclip', 'gray', '1.3em', '2px'); ?> PDF receipt will be attached to the email automatically
                 		</p>
@@ -599,27 +667,238 @@ class MemberMouse_PDF_Receipts_Settings
 
 			</div>
 		</div>
+	<?php
+    }
+    
+    /**
+     * This function renders the send test tab content
+     */
+    public function render_test_tab()
+    {
+        ?>
+		<div style="margin-top: 20px;">
+		<div style="margin-left: 10px; width: 700px;">
+			
+			<!-- TESTING SECTION -->
+			<div class="updated" style="padding: 10px; border-left-color: #066cd2">
+				
+					<div style="margin-left: 20px;">
+						<form method='post'>
+						<input name="mm_pdf_email_test" type="hidden" value="1" />
+						<p>
+							<strong>Send test to the following email address:</strong>
+						</p>
+						<p>
+							<input name="mm_pdf_email_test_email" type="text"
+								style="width: 251px; font-family: courier; font-size: 11px;"
+								value="<?php echo htmlentities($this->testEmail, ENT_COMPAT | ENT_HTML401, "UTF-8"); ?>"
+								placeholder="" />
+						</p>
+						<p>
+                			<?php echo MM_Utils::getIcon('info-circle', 'yellow', '1.3em', '2px'); ?> WordPress Mail (i.e. <code>wp_mail()</code>
+                			) is used to send emails. Be sure it is configured correctly by using a plugin like <a
+                				href="https://wordpress.org/plugins/wp-mail-smtp/"
+                				target="_blank">WP Mail SMTP</a>.
+                		</p>
+						<input type='submit' value='Send Test' class="mm-ui-button blue" />
+						</form>
+					</div>
+			</div>
+			<!-- END TESTING SECTION -->
 
-
-		<script type='text/javascript'>
-        <?php if(!empty($error)){ ?>
-        alert('<?php echo $error; ?>');
-        <?php  } ?>
-        </script>
-	<?php } else { ?>
-	<div class="error" style="padding: 10px; width: 600px;">
-		<?php if(!$mmPluginCheck) { ?>
-			The <a href="https://membermouse.com">MemberMouse plugin</a> must be
-			active in order to use this plugin.
-		<?php } else if(!$mmVersionCheck) { ?>
-			MemberMouse 2.4.0 or above is required to use this plugin. <a href="https://hub.membermouse.com/download.php">Download the latest version</a> and 
-			<a href="https://support.membermouse.com/support/solutions/articles/9000020393-manually-upgrading-membermouse" target="_blank">follow these instructions</a> to upgrade.
-		<?php } ?>
+			</div>
 		</div>
-	<?php } ?>
+	<?php
+    }
+    
+    /**
+     * This function renders the resend receipt tab content
+     */
+    public function render_resend_tab()
+    {
+        $order = null;
+        $orderNumber = "";
+        $crntStep = 1;
+        
+        // Resend receipt step 1
+        if (isset($_POST["mm_pdf_resend_email"]) && $_POST["mm_pdf_resend_email"] == "1") 
+        {
+            if (empty($_POST["mm_pdf_resend_order_num"])) {
+                $this->error = "Order number required";
+            } 
+            else 
+            {
+                $orderNumber = $_POST["mm_pdf_resend_order_num"];
+                $order = MM_Order::getDataByOrderNumber($_POST["mm_pdf_resend_order_num"]);
+                
+                if(!$order->isValid())
+                {
+                    $this->error = "{$orderNumber} is not a valid order number";
+                }
+                else 
+                {   
+                    $crntStep = 2;
+                }
+            }
+        }
+        
+        if (isset($_POST["mm_pdf_resend_email"]) && $_POST["mm_pdf_resend_email"] == "2") {
+            include (plugin_dir_path(__FILE__) . 'class-membermouse-receipt.php');
+            
+            if (empty($_POST["mm_pdf_resend_order_num"])) 
+            {
+                $this->error = "Order number required";
+            } 
+            else 
+            {
+                $orderNumber = $_POST["mm_pdf_resend_order_num"];
+                $order = MM_Order::getDataByOrderNumber($_POST["mm_pdf_resend_order_num"]);
+                
+                if($order->isValid())
+                {
+                    $addlCCEmail = "";
+                    
+                    if(!empty($_POST["mm_pdf_addl_cc_email"]))
+                    {
+                        $addlCCEmail = $_POST["mm_pdf_addl_cc_email"];
+                    }
+                    
+                    $pdfReceiptGenerator = MemberMouse_Receipt::get_instance();
+                    $response = $pdfReceiptGenerator->resendReceipt($order, $addlCCEmail);
+                    
+                    if (MM_Response::isSuccess($response)) {
+                        $this->error = "Receipt sent successfully";
+                    } else {
+                        $this->error = $response->message;
+                    }
+                }
+                else
+                {
+                    $this->error = "{$orderNumber} is not a valid order number";
+                }
+            }
+        }
+        ?>
+		
+		<div style="margin-top: 20px;">
+		<div style="margin-left: 10px; width: 700px;">
+			
+			<div class="updated" style="padding: 10px; border-left-color: #066cd2">
+				
+					<div style="margin-left: 20px; <?php echo (intval($crntStep) == 1) ? '':'display: none;'; ?>">
+						<form method='post'>
+						<input name="mm_pdf_resend_email" type="hidden" value="1" />
+						<p>
+							<a href="<?php echo MM_ModuleUtils::getUrl(MM_MODULE_MANAGE_TRANSACTIONS); ?>" target="_blank" class="mm-ui-button" style="padding:5px; font-size:14px;"><i class="fa fa-search"></i> <?php echo _mmt("Lookup Order #");?></a>
+						</p>
+						<p>
+							<strong>Enter order number to resend receipt for:</strong>
+						</p>
+						<p>
+							<input id="mm_pdf_resend_order_num" name="mm_pdf_resend_order_num" type="text"
+								style="width: 100px; font-family: courier; font-size: 11px;" placeholder="Order #" />
+						</p>
+						<p>
+							<input type='submit' value='Preview' class="mm-ui-button blue" />
+						</p>
+						</form>
+					</div>
+					
+					<div style="margin-left: 20px; <?php echo (intval($crntStep) == 2) ? '':'display: none;'; ?>">
+						<form method='post'>
+						<input name="mm_pdf_resend_email" type="hidden" value="2" />
+						<input name="mm_pdf_resend_order_num" type="hidden" value="<?php echo $orderNumber; ?>" />
+						<p>
+							<a href="<?php echo add_query_arg(array('tab' => 'resend')); ?>" class="mm-ui-button" style="padding:5px; font-size:14px;"><?php echo _mmt("Start Over");?></a>
+						</p>
+						<?php 
+						if(!is_null($order) && $order->isValid()) { 
+						    $data = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId());
+						    $ccEmail = "";
+						    
+						    $emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
+						    
+						    if(!empty($emailCCFieldId) && isset($data['cf_'.$emailCCFieldId]))
+						    {
+						        $ccEmail = trim($data['cf_'.$emailCCFieldId]);
+						        
+						        // validate email
+						        if (!filter_var($ccEmail, FILTER_VALIDATE_EMAIL))
+						        {
+						            // invalid email. clear it.
+						            $ccEmail = "";
+						        }
+						    }
+						?>
+						<p>
+							<strong>Recipient Information</strong><br/>
+							Name: <?= $data['first_name']." ".$data['last_name']; ?><br/>
+							To: <?= $data['email']; ?><br/>
+							CC: <?php if(!empty($ccEmail)) { echo $ccEmail."<br/>"; } ?>
+						</p>
+						<p>
+							<input name="mm_pdf_addl_cc_email" type="text" style="width: 251px; font-family: courier; 
+							     font-size: 11px;" placeholder="Additional CC Email Address" />
+						</p>
+						<p>
+							<strong>Order Information</strong><br/>
+							Order #: <?= $order->getOrderNumber(); ?><br/>
+							Product: <?= json_decode($data['order_products'], true)[0]['name'] ?><br/>
+							Order Total: <?= $order->getTotal(true); ?>
+						</p>
+						<p>
+							<input type='submit' value='Confirm & Send Receipt' class="mm-ui-button blue" />
+						</p>
+						<?php } else { ?>
+						<p>
+							No order specified. Click above to start over.
+						</p>
+						<?php } ?>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			jQuery("#mm_pdf_resend_order_num").focus();
+		</script>
+	<?php 
+    }
+    
+    /**
+     * This function renders the info tab content
+     */
+    public function render_info_tab()
+    {
+        if ($this->pdfInvoicingActive) 
+        {
+        ?>
+        <div style="margin-top: 20px;">
+        <div style="margin-left: 10px; width: 700px;">
+        <div class="updated" style="padding: 10px; border-left-color: #690">
+        <div style="margin-left: 20px;">
+			<h3>
+				<i class="fa fa-check" style="color: #690"></i> PDF Receipts Active
+			</h3>
+			
+			<?php $activityLogURL = MM_ModuleUtils::getUrl(MM_MODULE_LOGS, MM_MODULE_ACTIVITY_LOG); ?>
+			
+			<p>An email with a PDF receipt attached will be sent to MemberMouse members when an initial or rebill payment occurs.
+			All emails sent by this plugin will be logged in the MemberMouse <a href="<?php echo $activityLogURL; ?>" target="_blank">activity log</a>.</p>
+			
+			<p>
+    			<?php echo MM_Utils::getIcon('info-circle', 'yellow', '1.3em', '2px'); ?> WordPress Mail (i.e. <code>wp_mail()</code>
+				) is used to send emails. Be sure it is configured correctly by using a plugin like <a
+					href="https://wordpress.org/plugins/wp-mail-smtp/"
+					target="_blank">WP Mail SMTP</a>.
+			</p>
+		</div>
+		</div>
+		</div>
 	</div>
-
-<?php
+	<?php
+        }
     }
 
     private function getCustomFields($type)

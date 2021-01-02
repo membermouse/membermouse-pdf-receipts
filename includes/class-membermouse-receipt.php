@@ -10,6 +10,7 @@ use Dompdf\Dompdf;
 class MemberMouse_Receipt
 {
     private $isTest = false;
+    private $additionalCCEmail = "";
     private $testEmail = "";
     private $eventType = "";
     private $member_id = "";
@@ -113,8 +114,7 @@ class MemberMouse_Receipt
         if (!is_null($orderId))
         {
             $order = new MM_Order($orderId);
-            $user = new MM_User($order->getUserIdByOrderId($orderId));
-            $data = MM_Event::packageOrderData($user->getId(), $order->getId());
+            $data = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId());
             $this->process_payment_received($data);
         }
         else
@@ -122,6 +122,25 @@ class MemberMouse_Receipt
             $response = new MM_Response();
             $response->type = MM_Response::$ERROR;
             $response->message = "There must be at least one order placed in MemberMouse in order to run a test.";
+            return $response;
+        }
+        
+        return new MM_Response();
+    }
+    
+    public function resendReceipt($order, $additionalCCEmail)
+    {   
+        if ($order instanceof MM_Order && $order->isValid())
+        {
+            $this->additionalCCEmail = $additionalCCEmail;
+            $data = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId());
+            $this->process_payment_received($data);
+        }
+        else
+        {
+            $response = new MM_Response();
+            $response->type = MM_Response::$ERROR;
+            $response->message = "Unable to resend receipt. A valid order is required.";
             return $response;
         }
         
@@ -297,7 +316,7 @@ class MemberMouse_Receipt
 						<td class="right-align">Subtotal</td>
 						<td class="right-align"><?= _mmf($this->order_subtotal, $this->order_currency); ?></td>
 					</tr>
-				<?php if($this->order_shipping) : ?>
+				<?php if(isset($this->order_shipping) && floatval($this->order_shipping) > 0) : ?>
                 	<tr>
 						<td></td>
 						<td></td>
@@ -305,7 +324,7 @@ class MemberMouse_Receipt
 						<td class="right-align"><?= _mmf($this->order_shipping, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
-                <?php if($this->order_discount) : ?>
+                <?php if(isset($this->order_discount) && floatval($this->order_discount) > 0) : ?>
                 	<tr>
 						<td></td>
 						<td></td>
@@ -313,6 +332,12 @@ class MemberMouse_Receipt
 						<td class="right-align"><?= _mmf($this->order_discount, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
                 	<tr>
 						<td></td>
 						<td></td>
@@ -383,6 +408,11 @@ class MemberMouse_Receipt
         if(!empty($this->ccEmail))
         {
             $email->addCC($this->ccEmail);
+        }
+        
+        if(!empty($this->additionalCCEmail))
+        {
+            $email->addCC($this->additionalCCEmail);  
         }
         
         $email->setAttachments(array(
