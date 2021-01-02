@@ -10,47 +10,27 @@ use Dompdf\Dompdf;
 class MemberMouse_Receipt
 {
     private $isTest = false;
-    
     private $testEmail = "";
-    
     private $eventType = "";
-
     private $member_id = "";
-
     private $fname = "";
-
     private $lname = "";
-
     private $email = "";
-    
     private $ccEmail = "";
-
     private $address1 = "";
-
     private $address2 = "";
-
     private $city = "";
-
     private $state = "";
-
     private $zip = "";
-
     private $country = "";
-
     private $extra_info = "";
-
     private $product_name = "";
-
     private $order_currency = "";
-
     private $order_subtotal = "";
-
     private $order_discount = "";
-
+    private $order_shipping = "";
     private $order_total = "";
-
     private $order_number = "";
-
     private $message = "";
 
     /**
@@ -166,8 +146,9 @@ class MemberMouse_Receipt
         $this->country = $data['billing_country'];
         $order_products = json_decode($data['order_products'], true)[0];
         $this->product_name = $order_products['name'];
-        $this->order_subtotal = $data['order_total'];
+        $this->order_subtotal = $data['order_subtotal'];
         $this->order_discount = $data['order_discount'];
+        $this->order_shipping = $data['order_shipping'];
         $this->order_total = $data['order_total'];
         $this->order_number = $data['order_number'];
         $this->order_currency = isset($data['order_currency']) ? $data['order_currency'] : "";
@@ -284,11 +265,6 @@ class MemberMouse_Receipt
                 	<?php if($this->address2) : ?>
                   	<div><?= $this->address2; ?></div>
                 	<?php endif; ?>
-                	<?php
-            // 1. If "extra_info" is present, replace the name, email, and entire address with the contents of extra_info
-            // 2. Only show a comma if city and state are both present. This corrects the issue where both are missing and a comma is left floating by itself
-            // 3. Only show zip code if billing address is present
-            ?>
                 	<div><?= $this->city; ?> <?= ($this->city && $this->state)?",":""; ?> <?= $this->state; ?> <?= $this->address1?$this->zip:""; ?></div>
                 <?php endif; ?>
               </div>
@@ -309,37 +285,39 @@ class MemberMouse_Receipt
 				<thead>
 					<tr>
 						<th class="left-align">Service Description</th>
-						<th class="right-align">Order Number</th>
+						<th class="right-align">Order #</th>
 						<th></th>
-						<th class="right-align">Amount Billed</th>
+						<th class="right-align">Amount</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td><?= $this->product_name; ?></td>
 						<td class="right-align"><?= $this->order_number; ?></td>
+						<td class="right-align">Subtotal</td>
+						<td class="right-align"><?= _mmf($this->order_subtotal, $this->order_currency); ?></td>
+					</tr>
+				<?php if($this->order_shipping) : ?>
+                	<tr>
 						<td></td>
-						<td class="right-align">$<?= $this->order_subtotal; ?></td>
+						<td></td>
+						<td class="right-align">Shipping</td>
+						<td class="right-align"><?= _mmf($this->order_shipping, $this->order_currency); ?></td>
 					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-					</tr>
+                <?php endif; ?>
                 <?php if($this->order_discount) : ?>
-                <tr>
+                	<tr>
 						<td></td>
 						<td></td>
 						<td class="right-align">Discount</td>
-						<td class="right-align">$<?= $this->order_discount; ?></td>
+						<td class="right-align"><?= _mmf($this->order_discount, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
-                <tr>
+                	<tr>
 						<td></td>
 						<td></td>
 						<td class="total-paid-td right-align first"><strong>TOTAL PAID</strong></td>
-						<td class="total-paid-td right-align"><strong>$<?= $this->order_total; ?></strong></td>
+						<td class="total-paid-td right-align"><strong><?= _mmf($this->order_total, $this->order_currency); ?></strong></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
