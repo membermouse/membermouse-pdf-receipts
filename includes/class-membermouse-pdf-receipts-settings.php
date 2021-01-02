@@ -11,10 +11,10 @@ if (! defined('ABSPATH')) {
 /**
  * Settings class.
  */
-class MemberMouse_PDF_Invoices_Settings
+class MemberMouse_PDF_Receipts_Settings
 {
     /**
-     * The single instance of MemberMouse_PDF_Invoices_Settings.
+     * The single instance of MemberMouse_PDF_Receipts_Settings.
      *
      * @var object
      * @access private
@@ -117,8 +117,8 @@ class MemberMouse_PDF_Invoices_Settings
         return apply_filters($this->base . 'menu_settings', array(
             'location' => 'menu', // Possible settings: options, menu, submenu.
             'parent_slug' => 'admin.php',
-            'page_title' => __('MemberMouse PDF Invoices', 'membermouse-pdf-invoices'),
-            'menu_title' => __('MM PDF Invoices', 'membermouse-pdf-invoices'),
+            'page_title' => __('MemberMouse PDF Receipts', 'membermouse-pdf-receipts'),
+            'menu_title' => __('MM PDF Receipts', 'membermouse-pdf-receipts'),
             'capability' => 'manage_options',
             'menu_slug' => $this->parent->_token . '_settings',
             'function' => array(
@@ -139,7 +139,7 @@ class MemberMouse_PDF_Invoices_Settings
      */
     public function add_settings_link($links)
     {
-        $settings_link = '<a href="admin.php?page=' . $this->parent->_token . '_settings">' . __('Configure', 'membermouse-pdf-invoices') . '</a>';
+        $settings_link = '<a href="admin.php?page=' . $this->parent->_token . '_settings">' . __('Configure', 'membermouse-pdf-receipts') . '</a>';
         array_push($links, $settings_link);
         return $links;
     }
@@ -153,15 +153,15 @@ class MemberMouse_PDF_Invoices_Settings
     {
         // Send Test
         if (isset($_POST["mm_pdf_email_test"]) && $_POST["mm_pdf_email_test"] == "1") {
-            include (plugin_dir_path(__FILE__) . 'class-membermouse-invoice.php');
+            include (plugin_dir_path(__FILE__) . 'class-membermouse-receipt.php');
 
             if (empty($_POST["mm_pdf_email_test_email"])) {
                 $error = "Test email address required.";
             } else {
                 $testEmail = $_POST["mm_pdf_email_test_email"];
                 update_option("mm-pdf-email-test-email", $testEmail);
-                $pdfInvoicer = MemberMouse_Invoice::get_instance();
-                $response = $pdfInvoicer->sendTest($testEmail);
+                $pdfReceiptGenerator = MemberMouse_Receipt::get_instance();
+                $response = $pdfReceiptGenerator->sendTest($testEmail);
 
                 if (MM_Response::isSuccess($response)) {
                     $error = "Test sent successfully.";
@@ -231,8 +231,8 @@ class MemberMouse_PDF_Invoices_Settings
         $businessAddress = get_option("mm-pdf-business-address", false);
         $businessTaxLabel = get_option("mm-pdf-business-tax-label", false);
         $businessTaxId = get_option("mm-pdf-business-tax-id", false);
-        $invoiceFooterSection1 = get_option("mm-pdf-footer-section-1", false);
-        $invoiceFooterSection2 = get_option("mm-pdf-footer-section-2", false);
+        $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
+        $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         
         $emailFromId = get_option("mm-pdf-email-from", false);
         $emailCCFieldId = get_option("mm-pdf-email-cc-field-id", false);
@@ -334,7 +334,7 @@ class MemberMouse_PDF_Invoices_Settings
 <div class="mm-wrap" id="<?php echo $this->parent->_token.'_settings' ?>">
 	<div style="margin-bottom: 10px;">
 		<img
-			src="<?php echo plugins_url("../assets/images/", __FILE__)."/mm-pdf-invoices.png"; ?>"
+			src="<?php echo plugins_url("../assets/images/", __FILE__)."/mm-pdf-receipts.png"; ?>"
 			style="vertical-align: middle; margin-top: 20px;" />
 	</div>
 		
@@ -349,12 +349,12 @@ class MemberMouse_PDF_Invoices_Settings
 					<div style="margin-left: 20px;">
 						<?php if ($pdfInvoicingActive) { ?>
 						<h3>
-    						<i class="fa fa-check" style="color: #690"></i> PDF Invoicing Active
+    						<i class="fa fa-check" style="color: #690"></i> PDF Receipts Active
     					</h3>
 						
 						<?php $activityLogURL = MM_ModuleUtils::getUrl(MM_MODULE_LOGS, MM_MODULE_ACTIVITY_LOG); ?>
 						
-						<p>An email with a PDF invoice attached will be sent to MemberMouse members when an initial or rebill payment occurs.
+						<p>An email with a PDF receipt attached will be sent to MemberMouse members when an initial or rebill payment occurs.
 						All emails sent by this plugin will be logged in the MemberMouse <a href="<?php echo $activityLogURL; ?>" target="_blank">activity log</a>.</p>
 						
 						<form method='post'>
@@ -451,20 +451,20 @@ class MemberMouse_PDF_Invoices_Settings
 						</div>
 						
                 		<div style="margin-top:20px;">
-						<p><strong>Invoice Footer</strong></p>
+						<p><strong>Receipt Footer</strong></p>
 						<div style="margin-left:10px;">
 						<p>Area 1</p>
 						<p>
 						<textarea id="mm-footer-section-1" name="mm_footer_section_1"
 							style="width: 500px; font-family: courier; font-size: 11px;"
-							rows="8"><?php echo htmlentities($invoiceFooterSection1, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="8"><?php echo htmlentities($receiptFooterSection1, ENT_QUOTES, 'UTF-8', true); ?></textarea>
                 		</p>
                 		
                 		<p>Area 2</p>
 						<p>
 						<textarea id="mm-footer-section-2" name="mm_footer_section_2"
 							style="width: 500px; font-family: courier; font-size: 11px;"
-							rows="6"><?php echo htmlentities($invoiceFooterSection2, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+							rows="6"><?php echo htmlentities($receiptFooterSection2, ENT_QUOTES, 'UTF-8', true); ?></textarea>
                 		</p>
                 		</div>
                 		</div>
@@ -531,7 +531,7 @@ class MemberMouse_PDF_Invoices_Settings
 						<p>
 						<?php echo _mmt("CC"); ?>
                 		<div style="margin-left:10px;">
-                		<p>You can allow the customer to enter an email address to CC on PDF invoice emails. To do this, select a custom field 
+                		<p>You can allow the customer to enter an email address to CC on PDF receipt emails. To do this, select a custom field 
                 		below that will store the email address to CC.</p>
                 		<?php
                 		    $customFieldsList = $this->getCustomFields("input");
@@ -587,7 +587,7 @@ class MemberMouse_PDF_Invoices_Settings
 							style="width: 515px; font-family: courier; font-size: 11px;"
 							rows="15"><?php echo htmlentities($emailBody, ENT_QUOTES, 'UTF-8', true); ?></textarea>
 						<p>
-                			<?php echo MM_Utils::getIcon('paperclip', 'gray', '1.3em', '2px'); ?> PDF invoice will be attached to the email automatically
+                			<?php echo MM_Utils::getIcon('paperclip', 'gray', '1.3em', '2px'); ?> PDF receipt will be attached to the email automatically
                 		</p>
 
 						<input type='submit' value='Save Email Template'
@@ -642,16 +642,16 @@ class MemberMouse_PDF_Invoices_Settings
     }
 
     /**
-     * Main MemberMouse_PDF_Invoices_Settings Instance
+     * Main MemberMouse_PDF_Receipts_Settings Instance
      *
-     * Ensures only one instance of MemberMouse_PDF_Invoices_Settings is loaded or can be loaded.
+     * Ensures only one instance of MemberMouse_PDF_Receipts_Settings is loaded or can be loaded.
      *
      * @since 1.0.0
      * @static
-     * @see MemberMouse_PDF_Invoices()
+     * @see MemberMouse_PDF_Receipts()
      * @param object $parent
      *            Object instance.
-     * @return object MemberMouse_PDF_Invoices_Settings instance
+     * @return object MemberMouse_PDF_Receipts_Settings instance
      */
     public static function instance($parent)
     {
@@ -670,7 +670,7 @@ class MemberMouse_PDF_Invoices_Settings
      */
     public function __clone()
     {
-        _doing_it_wrong(__FUNCTION__, esc_html(__('Cloning of MemberMouse_PDF_Invoices_Settings is forbidden.')), esc_attr($this->parent->_version));
+        _doing_it_wrong(__FUNCTION__, esc_html(__('Cloning of MemberMouse_PDF_Receipts_Settings is forbidden.')), esc_attr($this->parent->_version));
     }
 
     // End __clone()
@@ -682,6 +682,6 @@ class MemberMouse_PDF_Invoices_Settings
      */
     public function __wakeup()
     {
-        _doing_it_wrong(__FUNCTION__, esc_html(__('Unserializing instances of MemberMouse_PDF_Invoices_Settings is forbidden.')), esc_attr($this->parent->_version));
+        _doing_it_wrong(__FUNCTION__, esc_html(__('Unserializing instances of MemberMouse_PDF_Receipts_Settings is forbidden.')), esc_attr($this->parent->_version));
     } // End __wakeup()
 }

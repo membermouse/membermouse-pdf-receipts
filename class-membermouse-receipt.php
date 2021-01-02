@@ -7,7 +7,7 @@ if (! defined('ABSPATH')) {
 require_once ('lib/vendor/autoload.php');
 use Dompdf\Dompdf;
 
-class MemberMouse_Invoice
+class MemberMouse_Receipt
 {
     private $isTest = false;
     
@@ -62,7 +62,7 @@ class MemberMouse_Invoice
     public static function get_instance()
     {
         if (null == self::$instance) {
-            self::$instance = new MemberMouse_Invoice();
+            self::$instance = new MemberMouse_Receipt();
         }
         return self::$instance;
     }
@@ -72,7 +72,7 @@ class MemberMouse_Invoice
      */
     public function __construct()
     {
-        $this->plugin_name = 'membermouse-pdf-invoices';
+        $this->plugin_name = 'membermouse-pdf-receipts';
         $this->today = date('M. j, Y');
     }
 
@@ -204,20 +204,20 @@ class MemberMouse_Invoice
         $businessAddress = get_option("mm-pdf-business-address", false);
         $businessTaxLabel = get_option("mm-pdf-business-tax-label", false);
         $businessTaxId = get_option("mm-pdf-business-tax-id", false);
-        $invoiceFooterSection1 = get_option("mm-pdf-footer-section-1", false);
-        $invoiceFooterSection2 = get_option("mm-pdf-footer-section-2", false);
+        $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
+        $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         ?>
 <!DOCTYPE html>
 <html>
 
 <head>
 <meta charset='utf-8'>
-<title><?php echo $businessName; ?> Invoice</title>
+<title><?php echo $businessName; ?> Receipt</title>
 <link
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet"
-	href="<?= plugin_dir_path(__FILE__) .'css/invoice.css'; ?>">
+	href="<?= plugin_dir_path(__FILE__) .'css/receipt.css'; ?>">
 </head>
 
 <body>
@@ -225,7 +225,7 @@ class MemberMouse_Invoice
 		<div class="row title-row">
 			<p>
 				<?php if($this->isTest) { ?>
-				<strong><span style="color:#c00">TEST INVOICE</span></strong><br/>
+				<strong><span style="color:#c00">TEST RECEIPT</span></strong><br/>
 				<?php } ?>
 				<strong><?php echo $businessName; ?></strong><br /> 
 				<?php echo $businessAddress; ?><br/>
@@ -235,9 +235,9 @@ class MemberMouse_Invoice
 			</p>
 		</div>
 
-		<div class="row invoice-table">
-			<div class="invoice-top">
-				<div class="invoice-info">
+		<div class="row receipt-table">
+			<div class="receipt-top">
+				<div class="receipt-info">
 					<div>
 						<strong>MEMBER ID:</strong> <?= $this->member_id; ?></div>
 					<br /> <br />
@@ -258,13 +258,13 @@ class MemberMouse_Invoice
                 	<div><?= $this->city; ?> <?= ($this->city && $this->state)?",":""; ?> <?= $this->state; ?> <?= $this->address1?$this->zip:""; ?></div>
                 <?php endif; ?>
               </div>
-				<div class="invoice-date">
+				<div class="receipt-date">
 					<div>
 						<strong>DATE PAID:</strong> <?= $this->today; ?></div>
 				</div>
 			</div>
             <?php if(!empty($this->order_currency)) { ?>
-            <div class="invoice-top-extra">
+            <div class="receipt-top-extra">
 				<p>
 					<em>All prices in <?php echo $this->order_currency; ?></em>
 				</p>
@@ -317,11 +317,11 @@ class MemberMouse_Invoice
 			</table>
 		</div>
 
-		<div class="invoice-bottom">
-			<?php echo $invoiceFooterSection1; ?>
+		<div class="receipt-bottom">
+			<?php echo $receiptFooterSection1; ?>
 		</div>
-		<div class="invoice-footer">
-			<?php echo $invoiceFooterSection2; ?>
+		<div class="receipt-footer">
+			<?php echo $receiptFooterSection2; ?>
 		</div>
 
 	</div>

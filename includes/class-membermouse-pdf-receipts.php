@@ -11,11 +11,11 @@ if (! defined('ABSPATH')) {
 /**
  * Main plugin class.
  */
-class MemberMouse_PDF_Invoices
+class MemberMouse_PDF_Receipts
 {
 
     /**
-     * The single instance of MemberMouse_PDF_Invoices.
+     * The single instance of MemberMouse_PDF_Receipts.
      *
      * @var object
      * @access private
@@ -112,7 +112,7 @@ class MemberMouse_PDF_Invoices
     public function __construct($file = '', $version = '1.0.0')
     {
         $this->_version = $version;
-        $this->_token = 'membermouse_pdf_invoices';
+        $this->_token = 'membermouse_pdf_receipts';
 
         // Load plugin environment variables.
         $this->file = $file;
@@ -146,17 +146,17 @@ class MemberMouse_PDF_Invoices
     } // End admin_enqueue_styles ()
     
     /**
-     * Main MemberMouse_PDF_Invoices Instance
+     * Main MemberMouse_PDF_Receipts Instance
      *
-     * Ensures only one instance of MemberMouse_PDF_Invoices is loaded or can be loaded.
+     * Ensures only one instance of MemberMouse_PDF_Receipts is loaded or can be loaded.
      *
      * @param string $file
      *            File instance.
      * @param string $version
      *            Version parameter.
      *            
-     * @return Object MemberMouse_PDF_Invoices instance
-     * @see MemberMouse_PDF_Invoices()
+     * @return Object MemberMouse_PDF_Receipts instance
+     * @see MemberMouse_PDF_Receipts()
      * @since 1.0.0
      * @static
      */
@@ -178,7 +178,7 @@ class MemberMouse_PDF_Invoices
      */
     public function __clone()
     {
-        _doing_it_wrong(__FUNCTION__, esc_html(__('Cloning of MemberMouse_PDF_Invoices is forbidden')), esc_attr($this->_version));
+        _doing_it_wrong(__FUNCTION__, esc_html(__('Cloning of MemberMouse_PDF_Receipts is forbidden')), esc_attr($this->_version));
     }
 
     // End __clone ()
@@ -190,7 +190,7 @@ class MemberMouse_PDF_Invoices
      */
     public function __wakeup()
     {
-        _doing_it_wrong(__FUNCTION__, esc_html(__('Unserializing instances of MemberMouse_PDF_Invoices is forbidden')), esc_attr($this->_version));
+        _doing_it_wrong(__FUNCTION__, esc_html(__('Unserializing instances of MemberMouse_PDF_Receipts is forbidden')), esc_attr($this->_version));
     }
 
     // End __wakeup ()

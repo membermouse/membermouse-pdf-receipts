@@ -14,17 +14,17 @@ p {
   padding-top: 20px;
 }
 
-.invoice-table {
+.receipt-table {
   border: 1px solid #000;
   margin-bottom: 30px;
   margin-top: 30px;
 }
 
-.invoice-top {
+.receipt-top {
   padding: 10px;
 }
 
-.invoice-top:after {
+.receipt-top:after {
   content: ".";
   visibility: hidden;
   display: block;
@@ -32,41 +32,41 @@ p {
   clear: both;
 }
 
-.invoice-info,
-.invoice-date {
+.receipt-info,
+.receipt-date {
   width: 50%;
   float: left;
 }
 
-.invoice-date,
-.invoice-top-extra {
+.receipt-date,
+.receipt-top-extra {
   text-align: right;
 }
 
-.invoice-top-extra {
+.receipt-top-extra {
   padding: 0 10px 10px;
 }
 
-.invoice-table table {
+.receipt-table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.invoice-table table th {
+.receipt-table table th {
   padding: 5px 10px;
   background: #f7f7f7;
 }
 
-.invoice-table table td {
+.receipt-table table td {
   padding: 5px 10px;
   vertical-align: middle;
 }
 
-.invoice-table table tr {
+.receipt-table table tr {
   height: 55px;
 }
 
-.invoice-table table tr:nth-of-type(2n+2) {
+.receipt-table table tr:nth-of-type(2n+2) {
   background: #f7f7f7;
 }
 
@@ -87,7 +87,7 @@ p {
   border-left: 1px solid #ddd;
 }
 
-.invoice-footer {
+.receipt-footer {
   margin-top: 40px;
   text-align: center;
   border-bottom: 4px solid #066cd2;
