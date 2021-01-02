@@ -15,6 +15,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option("mm-pdf-email-test-email");
 delete_option("mm-pdf-email-from");
+delete_option("mm-pdf-email-cc-field-id");
 delete_option("mm-pdf-email-subject");
 delete_option("mm-pdf-email-body");
 delete_option("mm-pdf-email-billing-custom-field-id");
