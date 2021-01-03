@@ -27,7 +27,7 @@ class MemberMouse_PDF_Receipts_Settings
     private $mmVersionCheck = false;
     private $emailTemplateCheck = false;
     private $pdfConfigCheck = false;
-    private $pdfInvoicingActive = false;
+    private $pdfReceiptsActive = false;
     private $emailCCFieldId = "";
     private $emailFromId = "";
     private $billingCustomFieldId = "";
@@ -172,6 +172,25 @@ class MemberMouse_PDF_Receipts_Settings
             $selectedTab = $_GET['tab'];
         }
         
+        // Reset Plugin
+        if (isset($_POST["mm_pdf_reset_plugin"]) && $_POST["mm_pdf_reset_plugin"] == "1")
+        {
+            delete_option("mm-pdf-email-test-email");
+            delete_option("mm-pdf-email-from");
+            delete_option("mm-pdf-email-cc-field-id");
+            delete_option("mm-pdf-email-subject");
+            delete_option("mm-pdf-email-body");
+            delete_option("mm-pdf-email-billing-custom-field-id");
+            delete_option("mm-pdf-business-name");
+            delete_option("mm-pdf-business-address");
+            delete_option("mm-pdf-business-tax-label");
+            delete_option("mm-pdf-business-tax-id");
+            delete_option("mm-pdf-footer-section-1");
+            delete_option("mm-pdf-footer-section-2");
+            
+            $this->error = "The plugin has been reset to its initial state";
+        }
+        
         // Send Test
         if (isset($_POST["mm_pdf_email_test"]) && $_POST["mm_pdf_email_test"] == "1") {
             include (plugin_dir_path(__FILE__) . 'class-membermouse-receipt.php');
@@ -280,7 +299,7 @@ class MemberMouse_PDF_Receipts_Settings
         
         $this->emailTemplateCheck = (!empty($this->emailSubject) && !empty($this->emailBody) && !empty($this->emailFromId)) ? true : false;
         $this->pdfConfigCheck = (!empty($this->businessName) && !empty($this->businessAddress)) ? true : false;
-        $this->pdfInvoicingActive = ($this->mmPluginCheck && $this->mmVersionCheck && $this->emailTemplateCheck && $this->pdfConfigCheck) ? true : false;        
+        $this->pdfReceiptsActive = ($this->mmPluginCheck && $this->mmVersionCheck && $this->emailTemplateCheck && $this->pdfConfigCheck) ? true : false;        
         ?>
 <style>
 .mm-ui-button {
@@ -297,7 +316,7 @@ class MemberMouse_PDF_Receipts_Settings
 	
 	<?php if ($this->mmPluginCheck && $this->mmVersionCheck) { ?>
 	
-	<?php if($this->pdfInvoicingActive) { ?>
+	<?php if($this->pdfReceiptsActive) { ?>
 	<div class="mm-navbar" style="margin-bottom:10px;"><ul>
         <li> 
 		<a href="<?php echo add_query_arg(array('tab' => 'config')); ?>" class='<?php echo ($selectedTab == 'config' ? "active":""); ?>'>
@@ -317,26 +336,30 @@ class MemberMouse_PDF_Receipts_Settings
 			<?php echo _mmt("Resend Receipt");?>
 		</a>
 		</li>
-		
 		<li> 
 		<a href="<?php echo add_query_arg(array('tab' => 'info')); ?>" class='<?php echo ($selectedTab == 'info' ? "active":""); ?>'>
 			<i class="fa fa-info-circle"></i> <?= _mmt("Info"); ?>
 		</a>
 		</li>
+		<li> 
+		<a href="https://support.membermouse.com/support/solutions/articles/9000197357-send-pdf-receipts-to-members" target="_blank">
+			<i class="fa fa-life-ring"></i> <?= _mmt("Help"); ?>
+		</a>
+		</li>
 	</ul></div>
 	<?php } ?>
 	
-	<?php if (!$this->pdfInvoicingActive) { ?>
+	<?php if (!$this->pdfReceiptsActive) { ?>
 	<div style="margin-top: 20px;">
 		<div style="margin-left: 10px; width: 700px;">
 			<div class="updated" style="padding: 10px; border-left-color: #690">
 				<div style="margin-left: 20px;">
-					<h3>
-						<i class="fa fa-times" style="color: #c00"></i> PDF Invoicing Not Active
-					</h3>
+					<h2>
+						<i class="fa fa-times" style="color: #c00"></i> PDF Receipts Not Active
+					</h2>
 					
 					<p style="font-size:14px;">
-						<strong>Complete the following in order to activate PDF invoicing:</strong>
+						<strong>Complete the following in order to activate PDF receipts:</strong>
 					</p>
 					
 					<p style="font-size:14px;">
@@ -871,16 +894,18 @@ class MemberMouse_PDF_Receipts_Settings
      */
     public function render_info_tab()
     {
-        if ($this->pdfInvoicingActive) 
+        
+        
+        if ($this->pdfReceiptsActive) 
         {
         ?>
         <div style="margin-top: 20px;">
         <div style="margin-left: 10px; width: 700px;">
         <div class="updated" style="padding: 10px; border-left-color: #690">
         <div style="margin-left: 20px;">
-			<h3>
+			<h2>
 				<i class="fa fa-check" style="color: #690"></i> PDF Receipts Active
-			</h3>
+			</h2>
 			
 			<?php $activityLogURL = MM_ModuleUtils::getUrl(MM_MODULE_LOGS, MM_MODULE_ACTIVITY_LOG); ?>
 			
@@ -893,6 +918,22 @@ class MemberMouse_PDF_Receipts_Settings
 					href="https://wordpress.org/plugins/wp-mail-smtp/"
 					target="_blank">WP Mail SMTP</a>.
 			</p>
+			
+			<script>
+            function confirmReset() {
+              if (confirm("Are you sure you want to reset the plugin to its initial state?")) {
+                jQuery("#mm_pdf_reset_plugin_form").submit();
+              }
+            }
+            </script>
+			<h3>Reset Plugin to Initial State</h3>
+			<p>
+			Click the button below to reset the plugin to its initial state. This will delete all current configuration settings. 
+			</p>
+			<form id="mm_pdf_reset_plugin_form" method='post' action='<?= remove_query_arg('tab'); ?>'>
+				<input name="mm_pdf_reset_plugin" type="hidden" value="1" />
+				<a onClick="confirmReset()" class="mm-ui-button red" style="padding:5px;">Reset Plugin</a>
+			</form>
 		</div>
 		</div>
 		</div>
