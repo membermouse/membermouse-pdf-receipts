@@ -129,6 +129,10 @@ class MemberMouse_PDF_Receipts
             $this,
             'install'
         ));
+        
+        // Handle localisation.
+        $this->load_plugin_textdomain();
+        add_action( 'init', array( $this, 'load_localisation' ), 0 );
     }
 
     // End __construct ()
@@ -144,6 +148,35 @@ class MemberMouse_PDF_Receipts
         wp_register_style( $this->_token . '-admin', esc_url( $this->assets_url ) . 'css/admin.css', array(), $this->_version );
         wp_enqueue_style( $this->_token . '-admin' );
     } // End admin_enqueue_styles ()
+    
+    /**
+     * Load plugin localisation
+     *
+     * @access  public
+     * @return  void
+     * @since   1.0.0
+     */
+    public function load_localisation() 
+    {
+        load_plugin_textdomain( 'membermouse-pdf-receipts', false, dirname( plugin_basename( $this->file ) ) . '/lang/' );
+    } // End load_localisation ()
+    
+    /**
+     * Load plugin textdomain
+     *
+     * @access  public
+     * @return  void
+     * @since   1.0.0
+     */
+    public function load_plugin_textdomain() 
+    {
+        $domain = 'membermouse-pdf-receipts';
+        
+        $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+        
+        load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
+        load_plugin_textdomain( $domain, false, dirname( plugin_basename( $this->file ) ) . '/lang/' );
+    } // End load_plugin_textdomain ()
     
     /**
      * Main MemberMouse_PDF_Receipts Instance

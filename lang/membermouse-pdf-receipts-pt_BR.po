@@ -1,0 +1,420 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Project-Id-Version: MemberMouse PDF Receipts\n"
+"POT-Creation-Date: 2021-01-03 13:35-0500\n"
+"PO-Revision-Date: 2021-01-03 13:44-0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: membermouse-pdf-receipts.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2;_mmt\n"
+"Last-Translator: \n"
+"Language: pt\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#. Plugin Name of the plugin/theme
+#: includes/class-membermouse-pdf-receipts-settings.php:133
+msgid "MemberMouse PDF Receipts"
+msgstr "Recibos em PDF do MemberMouse"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:134
+msgid "MM PDF Receipts"
+msgstr "MM PDF Recibos"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:155
+#: includes/class-membermouse-pdf-receipts-settings.php:317
+msgid "Configure"
+msgstr "Configurar"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:189
+msgid "The plugin has been reset to its initial state"
+msgstr "O plugin foi reajustado para seu estado inicial"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:205
+msgid "Test sent successfully"
+msgstr "Teste enviado com sucesso"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:230
+msgid "Email template saved successfully"
+msgstr "Modelo de e-mail salvo com sucesso"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:259
+msgid "PDF configuration saved successfully"
+msgstr "Configuração em PDF salva com sucesso"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:323
+msgid "Send Test"
+msgstr "Enviar Teste"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:329
+msgid "Resend Receipt"
+msgstr "Reenviar o recibo"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:334
+msgid "Info"
+msgstr "Informação"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:339
+msgid "Help"
+msgstr "Ajuda"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:351
+msgid "PDF Receipts Not Active"
+msgstr "Recibos PDF não ativos"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:355
+msgid "Complete the following in order to activate PDF receipts"
+msgstr "Complete os seguintes itens para ativar os recibos em PDF"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:364
+msgid "Configure the PDF content below"
+msgstr "Configure o conteúdo PDF abaixo"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:364
+msgid "use the default configuration"
+msgstr "usar a configuração padrão"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:373
+msgid "Configure the email template below"
+msgstr "Configure o modelo de e-mail abaixo"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:373
+msgid "use the default template"
+msgstr "usar o modelo padrão"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:501
+msgid "PDF Receipt Configuration"
+msgstr "Configuração de recibos em PDF"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:504
+msgid "Insert the Default Configuration"
+msgstr "Inserir a configuração padrão"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:506
+msgid "Business Information"
+msgstr "Informações de seu Negócio"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:512
+msgid "Business Name"
+msgstr "Nome da Empresa"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:526
+msgid "Business Tax ID"
+msgstr "ID Imposto"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:531
+msgid "Receipt Footer"
+msgstr "Rodapé do recibo"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:533
+#: includes/class-membermouse-pdf-receipts-settings.php:540
+msgid "Area"
+msgstr "Área"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:550
+msgid "Manually Entered Billing Details"
+msgstr "Detalhes de Faturamento Manualmente Entrados"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:552
+msgid ""
+"You can allow the customer to manually enter their own billing details. To "
+"do this, select a custom field \n"
+"                \t\tbelow that will store billing details. When generating "
+"the PDF, if the customer has entered data into this field, \n"
+"                \t\tthen it will be used instead of the Name, Email Address "
+"and Billing Address present on the order."
+msgstr ""
+"Você pode permitir que o cliente insira manualmente seus próprios detalhes "
+"de faturamento. Para fazer isso, selecione um campo personalizado\n"
+"                \t\tabaixo que irá armazenar detalhes de faturamento. Ao "
+"gerar o PDF, caso o cliente tenha inserido dados neste campo,\n"
+"                \t\tentão será utilizado em vez do Nome, Endereço de e-mail "
+"e Endereço para faturamento presentes no pedido."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:567
+#: includes/class-membermouse-pdf-receipts-settings.php:625
+msgid "configure custom fields"
+msgstr "configurar campos personalizados"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:570
+#: includes/class-membermouse-pdf-receipts-settings.php:628
+msgid "only"
+msgstr "apenas"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:570
+#: includes/class-membermouse-pdf-receipts-settings.php:628
+msgid "custom fields will appear in the dropdown above"
+msgstr "os campos personalizados aparecerão no menu suspenso acima"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:575
+msgid "No custom fields with the type <em>Long Text</em> have been created."
+msgstr ""
+"Nenhum campo personalizado com o tipo <em>Texto descritivo</em> foi criado."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:576
+#: includes/class-membermouse-pdf-receipts-settings.php:634
+msgid "Configure custom fields"
+msgstr "Configurar campos personalizados"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:582
+msgid "Save PDF Configuration"
+msgstr "Salvar configuração PDF"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:594
+msgid "Email Template Configuration"
+msgstr "Configuração do modelo de e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:596
+msgid "Insert the Default Email Template"
+msgstr "Insira o modelo de e-mail padrão"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:599
+msgid "From"
+msgstr "De"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:606
+msgid "manage employees"
+msgstr "gerenciar funcionários"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:609
+#: includes/class-membermouse-pdf-receipts-settings.php:846
+msgid "CC"
+msgstr "CC"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:611
+msgid ""
+"You can allow the customer to enter an email address to CC on PDF receipt "
+"emails. To do this, select a custom field \n"
+"                \t\tbelow that will store the email address to CC."
+msgstr ""
+"Você pode permitir que o cliente digite um endereço de e-mail para a CC em "
+"e-mails de recebimento em PDF. Para fazer isto, selecione um campo "
+"personalizado\n"
+"                \t\tabaixo que irá armazenar o endereço de e-mail para a CC."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:633
+msgid "No custom fields with the type <em>Short Text</em> have been created."
+msgstr ""
+"Nenhum campo personalizado com o tipo <em>Texto breve</em> foi criado."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:642
+msgid "Email Subject"
+msgstr "Assunto do e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:649
+msgid "Only the following SmartTags can be used here"
+msgstr "Apenas as seguintes SmartTags podem ser usadas aqui"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:660
+msgid "Note: Only certain SmartTags can be used here"
+msgstr "Nota: Somente certas SmartTags podem ser usadas aqui"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:667
+msgid "PDF receipt will be attached to the email automatically"
+msgstr "O recibo em PDF será anexado automaticamente ao e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:670
+msgid "Save Email Template"
+msgstr "Salvar modelo de e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:698
+msgid "Send test to the following email address"
+msgstr "Enviar teste para o seguinte endereço de e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:704
+msgid "Enter email address"
+msgstr "Insira o endereço de e-mail"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:736
+#: includes/class-membermouse-pdf-receipts-settings.php:759
+msgid "Order number required"
+msgstr "Número do pedido necessário"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:745
+#: includes/class-membermouse-pdf-receipts-settings.php:786
+msgid "is not a valid order number"
+msgstr "não é um número de pedido válido"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:801
+msgid "Lookup Order #"
+msgstr "Ordem de Consulta #"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:804
+msgid "Enter order number to resend receipt for"
+msgstr "Digite o número do pedido para reenviar o recibo para"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:808
+#: includes/class-membermouse-pdf-receipts-settings.php:854
+#: includes/class-membermouse-receipt.php:306
+msgid "Order"
+msgstr "Pedido"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:811
+msgid "Preview"
+msgstr "Visualização"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:821
+msgid "Start Over"
+msgstr "Recomeçar"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:843
+msgid "Recipient Information"
+msgstr "Dados do Destinatário"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:844
+msgid "Name"
+msgstr "Nome"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:845
+msgid "To"
+msgstr "Para"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:850
+msgid "Additional CC Email Address"
+msgstr "Endereço de e-mail CC adicional"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:853
+msgid "Order Information"
+msgstr "Informação do Pedido"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:855
+msgid "Product"
+msgstr "Produto"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:856
+msgid "Order Total"
+msgstr "Total do Pedido"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:859
+msgid "Confirm & Send Receipt"
+msgstr "Confirmar e enviar recibo"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:863
+msgid "No order specified. Click above to start over."
+msgstr "Nenhuma ordem especificada. Clique acima para começar de novo."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:891
+msgid "PDF Receipts Active"
+msgstr "PDF Recibos Ativos"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:896
+msgid ""
+"An email with a PDF receipt attached will be sent to MemberMouse members "
+"when an initial or rebill payment occurs.\n"
+"\t\t\tAll emails sent by this plugin will be logged in the MemberMouse"
+msgstr ""
+"Um e-mail com um recibo em PDF anexado será enviado aos membros do "
+"MemberMouse quando ocorrer um pagamento inicial ou uma nova cobrança.\n"
+"\t\t\tTodos os e-mails enviados por este plugin serão logados no MemberMouse"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:908
+msgid "Are you sure you want to reset the plugin to its initial state?"
+msgstr "Você tem certeza de que quer repor o plugin no seu estado inicial?"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:913
+msgid "Reset Plugin to Initial State"
+msgstr "Redefinir o Plugin para o Estado Inicial"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:915
+msgid ""
+"Click the button below to reset the plugin to its initial state. This will "
+"delete the current configuration settings."
+msgstr ""
+"Clique no botão abaixo para repor o plugin no seu estado inicial. Isto "
+"apagará as configurações atuais."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:919
+msgid "Reset Plugin"
+msgstr "Redefinir plugin"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:977
+msgid "Cloning of MemberMouse_PDF_Receipts_Settings is forbidden."
+msgstr "É proibida a clonagem de Rato_PDF_Receipts_Settings."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:989
+msgid ""
+"Unserializing instances of MemberMouse_PDF_Receipts_Settings is forbidden."
+msgstr ""
+"É proibida a deserialização de casos de RatoMouse_PDF_Receipts_Settings."
+
+#: includes/class-membermouse-pdf-receipts.php:181
+msgid "Cloning of MemberMouse_PDF_Receipts is forbidden"
+msgstr "É proibida a clonagem de Rato_PDF_Receipts dos Membros"
+
+#: includes/class-membermouse-pdf-receipts.php:193
+msgid "Unserializing instances of MemberMouse_PDF_Receipts is forbidden"
+msgstr "É proibida a des-serialização de casos de RatoMouse_PDF_Receipts"
+
+#: includes/class-membermouse-receipt.php:261
+msgid "TEST RECEIPT"
+msgstr "RECEBIMENTO DO TESTE"
+
+#: includes/class-membermouse-receipt.php:266
+msgid "Tax ID"
+msgstr "CNPJ"
+
+#: includes/class-membermouse-receipt.php:275
+msgid "MEMBER ID"
+msgstr "ID DO MEMBRO"
+
+#: includes/class-membermouse-receipt.php:291
+msgid "DATE PAID"
+msgstr "DATA DE PAGAMENTO"
+
+#: includes/class-membermouse-receipt.php:297
+msgid "All prices in"
+msgstr "Todos os preços em"
+
+#: includes/class-membermouse-receipt.php:305
+msgid "Service Description"
+msgstr "Descrição do Serviço"
+
+#: includes/class-membermouse-receipt.php:308
+msgid "Amount"
+msgstr "Quantidade"
+
+#: includes/class-membermouse-receipt.php:315
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#: includes/class-membermouse-receipt.php:322
+msgid "Shipping"
+msgstr "Envio"
+
+#: includes/class-membermouse-receipt.php:330
+msgid "Discount"
+msgstr "Desconto"
+
+#: includes/class-membermouse-receipt.php:343
+msgid "TOTAL PAID"
+msgstr "TOTAL PAGO"
+
+#: includes/class-membermouse-receipt.php:424
+msgid "TEST"
+msgstr "TESTE"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://membermouse.com"
+msgstr "https://membermouse.com"
+
+#. Description of the plugin/theme
+msgid ""
+"Sends an email receipt with PDF attachment on initial and rebill payments."
+msgstr ""
+"Envia um recibo de e-mail com anexo PDF sobre os pagamentos iniciais e de "
+"reenchimento."
+
+#. Author of the plugin/theme
+msgid "MemberMouse, LLC"
+msgstr "MemberMouse, LLC"

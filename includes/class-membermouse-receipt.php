@@ -236,7 +236,6 @@ class MemberMouse_Receipt
         
         $businessName = get_option("mm-pdf-business-name", false);
         $businessAddress = get_option("mm-pdf-business-address", false);
-        $businessTaxLabel = get_option("mm-pdf-business-tax-label", false);
         $businessTaxId = get_option("mm-pdf-business-tax-id", false);
         $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
         $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
@@ -259,12 +258,12 @@ class MemberMouse_Receipt
 		<div class="row title-row">
 			<p>
 				<?php if($this->isTest) { ?>
-				<strong><span style="color:#c00">TEST RECEIPT</span></strong><br/>
+				<strong><span style="color:#c00"><?= _mmpdft("TEST RECEIPT"); ?></span></strong><br/>
 				<?php } ?>
 				<strong><?php echo $businessName; ?></strong><br /> 
 				<?php echo $businessAddress; ?><br/>
 				<?php if(!empty($businessTaxId)) { ?>
-				<?php echo $businessTaxLabel; ?> <?php echo $businessTaxId; ?>
+				<?= _mmpdft("Tax ID"); ?>: <?php echo $businessTaxId; ?>
 				<?php } ?>
 			</p>
 		</div>
@@ -273,7 +272,7 @@ class MemberMouse_Receipt
 			<div class="receipt-top">
 				<div class="receipt-info">
 					<div>
-						<strong>MEMBER ID:</strong> <?= $this->member_id; ?></div>
+						<strong><?= _mmpdft("MEMBER ID"); ?>:</strong> <?= $this->member_id; ?></div>
 					<br /> <br />
                 <?php if($this->extra_info) : ?>
                   <div><?= $this->extra_info; ?></div>
@@ -289,13 +288,13 @@ class MemberMouse_Receipt
               </div>
 				<div class="receipt-date">
 					<div>
-						<strong>DATE PAID:</strong> <?= $this->today; ?></div>
+						<strong><?= _mmpdft("DATE PAID"); ?>:</strong> <?= $this->today; ?></div>
 				</div>
 			</div>
             <?php if(!empty($this->order_currency)) { ?>
             <div class="receipt-top-extra">
 				<p>
-					<em>All prices in <?php echo $this->order_currency; ?></em>
+					<em><?= _mmpdft("All prices in"); ?> <?php echo $this->order_currency; ?></em>
 				</p>
 			</div>
 			<?php } ?>
@@ -303,24 +302,24 @@ class MemberMouse_Receipt
             <table>
 				<thead>
 					<tr>
-						<th class="left-align">Service Description</th>
-						<th class="right-align">Order #</th>
+						<th class="left-align"><?= _mmpdft("Service Description"); ?></th>
+						<th class="right-align"><?= _mmpdft("Order"); ?> #</th>
 						<th></th>
-						<th class="right-align">Amount</th>
+						    <th class="right-align"><?= _mmpdft("Amount"); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td><?= $this->product_name; ?></td>
 						<td class="right-align"><?= $this->order_number; ?></td>
-						<td class="right-align">Subtotal</td>
+						<td class="right-align"><?= _mmpdft("Subtotal"); ?></td>
 						<td class="right-align"><?= _mmf($this->order_subtotal, $this->order_currency); ?></td>
 					</tr>
 				<?php if(isset($this->order_shipping) && floatval($this->order_shipping) > 0) : ?>
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="right-align">Shipping</td>
+						<td class="right-align"><?= _mmpdft("Shipping"); ?></td>
 						<td class="right-align"><?= _mmf($this->order_shipping, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
@@ -328,7 +327,7 @@ class MemberMouse_Receipt
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="right-align">Discount</td>
+						<td class="right-align"><?= _mmpdft("Discount"); ?></td>
 						<td class="right-align"><?= _mmf($this->order_discount, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
@@ -341,7 +340,7 @@ class MemberMouse_Receipt
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="total-paid-td right-align first"><strong>TOTAL PAID</strong></td>
+						<td class="total-paid-td right-align first"><strong><?= _mmpdft("TOTAL PAID"); ?></strong></td>
 						<td class="total-paid-td right-align"><strong><?= _mmf($this->order_total, $this->order_currency); ?></strong></td>
 					</tr>
 					<tr>
@@ -422,7 +421,7 @@ class MemberMouse_Receipt
         
         if($this->isTest)
         {
-            $email->setSubject("[TEST] ".$emailSubject);
+            $email->setSubject("["._mmpdft("TEST")."] ".$emailSubject);
             $email->setToAddress($this->testEmail);
             $email->disableLogging();
         }

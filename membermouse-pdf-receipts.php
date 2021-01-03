@@ -24,6 +24,15 @@ if (! defined('ABSPATH')) {
 require_once 'includes/class-membermouse-pdf-receipts.php';
 require_once 'includes/class-membermouse-pdf-receipts-settings.php';
 
+function _mmpdft($str)
+{
+    if (function_exists("__"))
+    {
+        return __($str, "membermouse-pdf-receipts");
+    }
+    return $str;
+}
+
 /**
  * Returns the main instance of MemberMouse_PDF_Receipts to prevent the need to use globals.
  *

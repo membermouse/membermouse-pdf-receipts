@@ -1,0 +1,418 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: MemberMouse PDF Receipts\n"
+"POT-Creation-Date: 2021-01-03 13:35-0500\n"
+"PO-Revision-Date: 2021-01-03 13:41-0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: membermouse-pdf-receipts.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2;_mmt\n"
+"Last-Translator: \n"
+"Language: hu\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#. Plugin Name of the plugin/theme
+#: includes/class-membermouse-pdf-receipts-settings.php:133
+msgid "MemberMouse PDF Receipts"
+msgstr "MemberMouse PDF nyugták"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:134
+msgid "MM PDF Receipts"
+msgstr "MM PDF nyugták"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:155
+#: includes/class-membermouse-pdf-receipts-settings.php:317
+msgid "Configure"
+msgstr "Beállítás"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:189
+msgid "The plugin has been reset to its initial state"
+msgstr "A bővítmény visszaállt az eredeti állapotába"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:205
+msgid "Test sent successfully"
+msgstr "A teszt sikeresen elküldve"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:230
+msgid "Email template saved successfully"
+msgstr "Az e-mail sablon sikeresen mentve"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:259
+msgid "PDF configuration saved successfully"
+msgstr "A PDF-konfiguráció mentése sikeresen megtörtént"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:323
+msgid "Send Test"
+msgstr "Teszt küldése"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:329
+msgid "Resend Receipt"
+msgstr "Küldje el újra a nyugtát"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:334
+msgid "Info"
+msgstr "Információ"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:339
+msgid "Help"
+msgstr "Segítség"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:351
+msgid "PDF Receipts Not Active"
+msgstr "A PDF-nyugták nem aktívak"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:355
+msgid "Complete the following in order to activate PDF receipts"
+msgstr "Tegye a következőket a PDF-nyugták aktiválásához"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:364
+msgid "Configure the PDF content below"
+msgstr "Konfigurálja az alábbi PDF-tartalmat"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:364
+msgid "use the default configuration"
+msgstr "használja az alapértelmezett konfigurációt"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:373
+msgid "Configure the email template below"
+msgstr "Konfigurálja az alábbi e-mail sablont"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:373
+msgid "use the default template"
+msgstr "használja az alapértelmezett sablont"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:501
+msgid "PDF Receipt Configuration"
+msgstr "PDF nyugta konfigurálása"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:504
+msgid "Insert the Default Configuration"
+msgstr "Helyezze be az alapértelmezett konfigurációt"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:506
+msgid "Business Information"
+msgstr "Üzleti információ"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:512
+msgid "Business Name"
+msgstr "Vállalkozás neve"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:526
+msgid "Business Tax ID"
+msgstr "Üzleti adóazonosító"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:531
+msgid "Receipt Footer"
+msgstr "Nyugta lábléc"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:533
+#: includes/class-membermouse-pdf-receipts-settings.php:540
+msgid "Area"
+msgstr "Terület"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:550
+msgid "Manually Entered Billing Details"
+msgstr "Kézzel beírt számlázási adatok"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:552
+msgid ""
+"You can allow the customer to manually enter their own billing details. To "
+"do this, select a custom field \n"
+"                \t\tbelow that will store billing details. When generating "
+"the PDF, if the customer has entered data into this field, \n"
+"                \t\tthen it will be used instead of the Name, Email Address "
+"and Billing Address present on the order."
+msgstr ""
+"Engedélyezheti az ügyfélnek, hogy manuálisan adja meg saját számlázási "
+"adatait. Ehhez válasszon egy egyéni mezőt\n"
+"                az alábbiakban a számlázási adatokat tárolja. A PDF "
+"létrehozásakor, ha az ügyfél adatokat adott meg ebben a mezőben,\n"
+"                akkor a megrendelésben szereplő Név, E-mail cím és "
+"Számlázási cím helyett fogja használni."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:567
+#: includes/class-membermouse-pdf-receipts-settings.php:625
+msgid "configure custom fields"
+msgstr "konfigurálja az egyéni mezőket"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:570
+#: includes/class-membermouse-pdf-receipts-settings.php:628
+msgid "only"
+msgstr "csak"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:570
+#: includes/class-membermouse-pdf-receipts-settings.php:628
+msgid "custom fields will appear in the dropdown above"
+msgstr "az egyéni mezők a fenti legördülő menüben jelennek meg"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:575
+msgid "No custom fields with the type <em>Long Text</em> have been created."
+msgstr "Nem hoztak létre <em>Long Text</em> típusú egyéni mezőket."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:576
+#: includes/class-membermouse-pdf-receipts-settings.php:634
+msgid "Configure custom fields"
+msgstr "Konfigurálja az egyéni mezőket"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:582
+msgid "Save PDF Configuration"
+msgstr "Mentse a PDF-konfigurációt"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:594
+msgid "Email Template Configuration"
+msgstr "E-mail sablon konfigurálása"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:596
+msgid "Insert the Default Email Template"
+msgstr "Helyezze be az alapértelmezett e-mail sablont"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:599
+msgid "From"
+msgstr "Ettől"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:606
+msgid "manage employees"
+msgstr "az alkalmazottak irányítása"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:609
+#: includes/class-membermouse-pdf-receipts-settings.php:846
+msgid "CC"
+msgstr "CC"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:611
+msgid ""
+"You can allow the customer to enter an email address to CC on PDF receipt "
+"emails. To do this, select a custom field \n"
+"                \t\tbelow that will store the email address to CC."
+msgstr ""
+"Engedélyezheti az ügyfélnek, hogy a PDF átvételi e-mailekben megadjon egy e-"
+"mail címet a CC-nek. Ehhez válasszon egy egyéni mezőt\n"
+"                Az alábbiakban az e-mail címet tárolja a CC."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:633
+msgid "No custom fields with the type <em>Short Text</em> have been created."
+msgstr "Nem jött létre <em>rövid szövegű</em> egyedi mező."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:642
+msgid "Email Subject"
+msgstr "E-mail tárgya"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:649
+msgid "Only the following SmartTags can be used here"
+msgstr "Csak a következő SmartTagek használhatók itt"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:660
+msgid "Note: Only certain SmartTags can be used here"
+msgstr "Megjegyzés: Itt csak bizonyos SmartTag-ok használhatók"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:667
+msgid "PDF receipt will be attached to the email automatically"
+msgstr "A PDF nyugtát automatikusan csatoljuk az e-mailhez"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:670
+msgid "Save Email Template"
+msgstr "E-mail sablon mentése"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:698
+msgid "Send test to the following email address"
+msgstr "Küldje el a tesztet a következő e-mail címre"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:704
+msgid "Enter email address"
+msgstr "Adj meg egy e-mail címet"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:736
+#: includes/class-membermouse-pdf-receipts-settings.php:759
+msgid "Order number required"
+msgstr "Rendelési szám szükséges"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:745
+#: includes/class-membermouse-pdf-receipts-settings.php:786
+msgid "is not a valid order number"
+msgstr "nem érvényes rendelési szám"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:801
+msgid "Lookup Order #"
+msgstr "Keresési megrendelés száma"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:804
+msgid "Enter order number to resend receipt for"
+msgstr ""
+"Írja be a megrendelés számát, amelyhez újra el szeretné küldeni a nyugtát"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:808
+#: includes/class-membermouse-pdf-receipts-settings.php:854
+#: includes/class-membermouse-receipt.php:306
+msgid "Order"
+msgstr "Rendezés"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:811
+msgid "Preview"
+msgstr "Előnézet"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:821
+msgid "Start Over"
+msgstr "Kezdjünk bele"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:843
+msgid "Recipient Information"
+msgstr "Címzett információ"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:844
+msgid "Name"
+msgstr "Név"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:845
+msgid "To"
+msgstr "Címzett"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:850
+msgid "Additional CC Email Address"
+msgstr "További CC e-mail cím"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:853
+msgid "Order Information"
+msgstr "Rendelési információ"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:855
+msgid "Product"
+msgstr "Termék"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:856
+msgid "Order Total"
+msgstr "Megrendelés összesen"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:859
+msgid "Confirm & Send Receipt"
+msgstr "Erősítse meg és küldje el a nyugtát"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:863
+msgid "No order specified. Click above to start over."
+msgstr "Nincs megadva sorrend. Kattintson a fenti gombra az újrakezdéshez."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:891
+msgid "PDF Receipts Active"
+msgstr "A PDF-nyugták aktívak"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:896
+msgid ""
+"An email with a PDF receipt attached will be sent to MemberMouse members "
+"when an initial or rebill payment occurs.\n"
+"\t\t\tAll emails sent by this plugin will be logged in the MemberMouse"
+msgstr ""
+"E-mailt csatolt PDF-nyugtával küldünk a MemberMouse tagjainak, amikor egy "
+"kezdeti vagy újrabefizetés történik.\n"
+"A bővítmény által küldött összes e-mailt naplózza a MemberMouse"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:908
+msgid "Are you sure you want to reset the plugin to its initial state?"
+msgstr "Biztosan vissza szeretné állítani a bővítmény eredeti állapotát?"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:913
+msgid "Reset Plugin to Initial State"
+msgstr "Alaphelyzetbe állítja a beépülő modult"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:915
+msgid ""
+"Click the button below to reset the plugin to its initial state. This will "
+"delete the current configuration settings."
+msgstr ""
+"Kattintson a lenti gombra a plugin eredeti állapotának visszaállításához. "
+"Ez törli az aktuális konfigurációs beállításokat."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:919
+msgid "Reset Plugin"
+msgstr "A plugin visszaállítása"
+
+#: includes/class-membermouse-pdf-receipts-settings.php:977
+msgid "Cloning of MemberMouse_PDF_Receipts_Settings is forbidden."
+msgstr "A MemberMouse_PDF_Receipts_Settings klónozása tilos."
+
+#: includes/class-membermouse-pdf-receipts-settings.php:989
+msgid ""
+"Unserializing instances of MemberMouse_PDF_Receipts_Settings is forbidden."
+msgstr ""
+"Tilos a MemberMouse_PDF_Receipts_Settings példányainak nem serializálása."
+
+#: includes/class-membermouse-pdf-receipts.php:181
+msgid "Cloning of MemberMouse_PDF_Receipts is forbidden"
+msgstr "A MemberMouse_PDF_Receipts klónozása tilos"
+
+#: includes/class-membermouse-pdf-receipts.php:193
+msgid "Unserializing instances of MemberMouse_PDF_Receipts is forbidden"
+msgstr "Tilos a MemberMouse_PDF_Receipts példányok nem serializálása"
+
+#: includes/class-membermouse-receipt.php:261
+msgid "TEST RECEIPT"
+msgstr "VIZSGÁLATI ÁTVÉTEL"
+
+#: includes/class-membermouse-receipt.php:266
+msgid "Tax ID"
+msgstr "Adóazonosító"
+
+#: includes/class-membermouse-receipt.php:275
+msgid "MEMBER ID"
+msgstr "TAG-AZONOSÍTÓ"
+
+#: includes/class-membermouse-receipt.php:291
+msgid "DATE PAID"
+msgstr "KIFizetett dátum"
+
+#: includes/class-membermouse-receipt.php:297
+msgid "All prices in"
+msgstr "Minden ár itt:"
+
+#: includes/class-membermouse-receipt.php:305
+msgid "Service Description"
+msgstr "Szolgáltatások leírása"
+
+#: includes/class-membermouse-receipt.php:308
+msgid "Amount"
+msgstr "Összeg"
+
+#: includes/class-membermouse-receipt.php:315
+msgid "Subtotal"
+msgstr "Részösszeg"
+
+#: includes/class-membermouse-receipt.php:322
+msgid "Shipping"
+msgstr "Szállítás"
+
+#: includes/class-membermouse-receipt.php:330
+msgid "Discount"
+msgstr "Kedvezmény"
+
+#: includes/class-membermouse-receipt.php:343
+msgid "TOTAL PAID"
+msgstr "ÖSSZESEN FIZETVE"
+
+#: includes/class-membermouse-receipt.php:424
+msgid "TEST"
+msgstr "TESZT"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://membermouse.com"
+msgstr "https://membermouse.com"
+
+#. Description of the plugin/theme
+msgid ""
+"Sends an email receipt with PDF attachment on initial and rebill payments."
+msgstr ""
+"E-mail nyugtát küld PDF-melléklettel a kezdeti és a számlázási "
+"kifizetésekről."
+
+#. Author of the plugin/theme
+msgid "MemberMouse, LLC"
+msgstr "MemberMouse, LLC"
