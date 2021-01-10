@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: MemberMouse PDF Receipts
- * Version: 1.1.0
+ * Version: 1.0.0
  * Plugin URI: https://membermouse.com
  * Description: Sends an email receipt with PDF attachment on initial and rebill payments.
  * Author: MemberMouse, LLC
@@ -65,7 +65,7 @@ function membermouse_receipt_pdf_action_handler($data)
 membermouse_pdf_receipts();
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://github.com/membermouse/membermouse-pdf-receipts',
+    'https://membermouse.com/resources/mm-pdf-receipts.json',
     __FILE__,
     'membermouse-pdf-receipts'
 );
