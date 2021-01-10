@@ -37,6 +37,9 @@ Yes. You need to have MemberMouse 2.4.0 or above installed and activated to use 
 = 1.0 =
 * Initial release.
 
+= 1.1 =
+* Update test.
+
 == Upgrade Notice ==
 
 = 1.0 =
