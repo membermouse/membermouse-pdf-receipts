@@ -23,6 +23,7 @@ if (! defined('ABSPATH')) {
 // Load plugin class files.
 require_once 'includes/class-membermouse-pdf-receipts.php';
 require_once 'includes/class-membermouse-pdf-receipts-settings.php';
+require 'plugin-update-checker/plugin-update-checker.php';
 
 function _mmpdft($str)
 {
@@ -62,3 +63,9 @@ function membermouse_receipt_pdf_action_handler($data)
 }
 
 membermouse_pdf_receipts();
+
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+    'https://github.com/membermouse/membermouse-pdf-receipts',
+    __FILE__,
+    'membermouse-pdf-receipts'
+);
