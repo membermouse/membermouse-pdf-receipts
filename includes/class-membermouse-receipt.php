@@ -108,41 +108,51 @@ class MemberMouse_Receipt
         
         global $wpdb;
         
-        $sql = "SELECT id FROM ".MM_TABLE_ORDERS." ORDER BY date_added DESC LIMIT 1;";
-        $orderId = $wpdb->get_var($wpdb->prepare($sql));
+        $orderData = array();
         
-        if (!is_null($orderId))
+        $transactionsTable = MM_TABLE_TRANSACTION_LOG;
+        $ordersTable = MM_TABLE_ORDERS;
+        
+        $desiredTransactionTypes = implode(",",array(MM_TransactionLog::$TRANSACTION_TYPE_PAYMENT,MM_TransactionLog::$TRANSACTION_TYPE_RECURRING_PAYMENT));
+        
+        $masterQuery = "SELECT o.id as orderId, t.transaction_type as type, t.transaction_date as date ".
+            "FROM {$transactionsTable} t ".
+            "LEFT JOIN {$ordersTable} o on (t.order_id = o.id) ".
+            "WHERE (t.transaction_type IN ({$desiredTransactionTypes})) ".
+            "ORDER BY t.transaction_date DESC LIMIT 1";
+        $results = $wpdb->get_results($masterQuery);
+        
+        if(count($results) > 0)
         {
+            $orderId = $results[0]->orderId;
+            $transactionType = $results[0]->type;
+            $isRebill = ($transactionType == 4) ? true:false;
+            
             $order = new MM_Order($orderId);
-            $data = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId());
-            $this->process_payment_received($data);
+            
+            if($order->isValid())
+            {
+                $orderData = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId(), null, null, $isRebill);
+                $orderData["event_type"] = ($isRebill == true) ? MM_Event::$PAYMENT_REBILL : MM_Event::$PAYMENT_RECEIVED;
+                $this->process_payment_received($orderData);
+            }
         }
-        else
+        
+        if(count($orderData) == 0)
         {
             $response = new MM_Response();
             $response->type = MM_Response::$ERROR;
-            $response->message = "There must be at least one order placed in MemberMouse in order to run a test.";
+            $response->message = "There must be at least one payment processed in MemberMouse in order to run a test.";
             return $response;
         }
         
         return new MM_Response();
     }
     
-    public function resendReceipt($order, $additionalCCEmail)
+    public function resendReceipt($data, $additionalCCEmail)
     {   
-        if ($order instanceof MM_Order && $order->isValid())
-        {
-            $this->additionalCCEmail = $additionalCCEmail;
-            $data = MM_Event::packageOrderData($order->getCustomer()->getId(), $order->getId());
-            $this->process_payment_received($data);
-        }
-        else
-        {
-            $response = new MM_Response();
-            $response->type = MM_Response::$ERROR;
-            $response->message = "Unable to resend receipt. A valid order is required.";
-            return $response;
-        }
+        $this->additionalCCEmail = $additionalCCEmail;
+        $this->process_payment_received($data);
         
         return new MM_Response();
     }
@@ -250,7 +260,7 @@ class MemberMouse_Receipt
 	href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet"
-	href="<?= plugin_dir_path(__FILE__) .'css/receipt.css'; ?>">
+	href="<?php echo plugin_dir_path(__FILE__) .'css/receipt.css'; ?>">
 </head>
 
 <body>
@@ -258,12 +268,12 @@ class MemberMouse_Receipt
 		<div class="row title-row">
 			<p>
 				<?php if($this->isTest) { ?>
-				<strong><span style="color:#c00"><?= _mmpdft("TEST RECEIPT"); ?></span></strong><br/>
+				<strong><span style="color:#c00"><?php echo _mmpdft("TEST RECEIPT"); ?></span></strong><br/>
 				<?php } ?>
 				<strong><?php echo $businessName; ?></strong><br /> 
 				<?php echo $businessAddress; ?><br/>
 				<?php if(!empty($businessTaxId)) { ?>
-				<?= _mmpdft("Tax ID"); ?>: <?php echo $businessTaxId; ?>
+				<?php echo _mmpdft("Tax ID"); ?>: <?php echo $businessTaxId; ?>
 				<?php } ?>
 			</p>
 		</div>
@@ -272,29 +282,29 @@ class MemberMouse_Receipt
 			<div class="receipt-top">
 				<div class="receipt-info">
 					<div>
-						<strong><?= _mmpdft("MEMBER ID"); ?>:</strong> <?= $this->member_id; ?></div>
+						<strong><?php echo _mmpdft("MEMBER ID"); ?>:</strong> <?php echo $this->member_id; ?></div>
 					<br /> <br />
                 <?php if($this->extra_info) : ?>
-                  <div><?= $this->extra_info; ?></div>
+                  <div><?php echo $this->extra_info; ?></div>
                 <?php else: ?>
-                 	<div><?= $this->fname; ?> <?= $this->lname; ?></div>
-					<div><?= $this->email; ?></div>
-					<div><?= $this->address1; ?></div>
+                 	<div><?php echo $this->fname; ?> <?php echo $this->lname; ?></div>
+					<div><?php echo $this->email; ?></div>
+					<div><?php echo $this->address1; ?></div>
                 	<?php if($this->address2) : ?>
-                  	<div><?= $this->address2; ?></div>
+                  	<div><?php echo $this->address2; ?></div>
                 	<?php endif; ?>
-                	<div><?= $this->city; ?> <?= ($this->city && $this->state)?",":""; ?> <?= $this->state; ?> <?= $this->address1?$this->zip:""; ?></div>
+                	<div><?php echo $this->city; ?> <?php echo ($this->city && $this->state)?",":""; ?> <?php echo $this->state; ?> <?php echo $this->address1?$this->zip:""; ?></div>
                 <?php endif; ?>
               </div>
 				<div class="receipt-date">
 					<div>
-						<strong><?= _mmpdft("DATE PAID"); ?>:</strong> <?= $this->today; ?></div>
+						<strong><?php echo _mmpdft("DATE PAID"); ?>:</strong> <?php echo $this->today; ?></div>
 				</div>
 			</div>
             <?php if(!empty($this->order_currency)) { ?>
             <div class="receipt-top-extra">
 				<p>
-					<em><?= _mmpdft("All prices in"); ?> <?php echo $this->order_currency; ?></em>
+					<em><?php echo _mmpdft("All prices in"); ?> <?php echo $this->order_currency; ?></em>
 				</p>
 			</div>
 			<?php } ?>
@@ -302,33 +312,33 @@ class MemberMouse_Receipt
             <table>
 				<thead>
 					<tr>
-						<th class="left-align"><?= _mmpdft("Service Description"); ?></th>
-						<th class="right-align"><?= _mmpdft("Order"); ?> #</th>
+						<th class="left-align"><?php echo _mmpdft("Service Description"); ?></th>
+						<th class="right-align"><?php echo _mmpdft("Order"); ?> #</th>
 						<th></th>
-						    <th class="right-align"><?= _mmpdft("Amount"); ?></th>
+						    <th class="right-align"><?php echo _mmpdft("Amount"); ?></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><?= $this->product_name; ?></td>
-						<td class="right-align"><?= $this->order_number; ?></td>
-						<td class="right-align"><?= _mmpdft("Subtotal"); ?></td>
-						<td class="right-align"><?= _mmf($this->order_subtotal, $this->order_currency); ?></td>
+						<td><?php echo $this->product_name; ?></td>
+						<td class="right-align"><?php echo $this->order_number; ?></td>
+						<td class="right-align"><?php echo _mmpdft("Subtotal"); ?></td>
+						<td class="right-align"><?php echo _mmf($this->order_subtotal, $this->order_currency); ?></td>
 					</tr>
 				<?php if(isset($this->order_shipping) && floatval($this->order_shipping) > 0) : ?>
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="right-align"><?= _mmpdft("Shipping"); ?></td>
-						<td class="right-align"><?= _mmf($this->order_shipping, $this->order_currency); ?></td>
+						<td class="right-align"><?php echo _mmpdft("Shipping"); ?></td>
+						<td class="right-align"><?php echo _mmf($this->order_shipping, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
                 <?php if(isset($this->order_discount) && floatval($this->order_discount) > 0) : ?>
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="right-align"><?= _mmpdft("Discount"); ?></td>
-						<td class="right-align"><?= _mmf($this->order_discount, $this->order_currency); ?></td>
+						<td class="right-align"><?php echo _mmpdft("Discount"); ?></td>
+						<td class="right-align"><?php echo _mmf($this->order_discount, $this->order_currency); ?></td>
 					</tr>
                 <?php endif; ?>
 					<tr>
@@ -340,8 +350,8 @@ class MemberMouse_Receipt
                 	<tr>
 						<td></td>
 						<td></td>
-						<td class="total-paid-td right-align first"><strong><?= _mmpdft("TOTAL PAID"); ?></strong></td>
-						<td class="total-paid-td right-align"><strong><?= _mmf($this->order_total, $this->order_currency); ?></strong></td>
+						<td class="total-paid-td right-align first"><strong><?php echo _mmpdft("TOTAL PAID"); ?></strong></td>
+						<td class="total-paid-td right-align"><strong><?php echo _mmf($this->order_total, $this->order_currency); ?></strong></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
