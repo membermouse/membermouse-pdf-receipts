@@ -49,9 +49,15 @@ function membermouse_pdf_receipts()
     }
 
     add_action('mm_payment_received', 'membermouse_receipt_pdf_action_handler');
-    add_action('mm_payment_rebill', 'membermouse_receipt_pdf_action_handler');
+    add_action('mm_payment_rebill', 'membermouse_rebill_payment_action_handler');
 
     return $instance;
+}
+
+function membermouse_rebill_payment_action_handler($data)
+{
+    $data["event_type"] = MM_Event::$PAYMENT_REBILL;
+    membermouse_receipt_pdf_action_handler($data);
 }
 
 function membermouse_receipt_pdf_action_handler($data)
