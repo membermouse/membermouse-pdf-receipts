@@ -283,6 +283,7 @@ class MemberMouse_PDF_Receipts_Settings
         // Activate PDF Invoicing
         $this->mmPluginCheck = is_plugin_active("membermouse/index.php");
         $this->mmVersionCheck = false;
+        $this->phpVersionCheck = ((double)phpversion() >= 7.1);
         
         if($this->mmPluginCheck)
         {
@@ -292,7 +293,7 @@ class MemberMouse_PDF_Receipts_Settings
         
         $this->emailTemplateCheck = (!empty($this->emailSubject) && !empty($this->emailBody) && !empty($this->emailFromId)) ? true : false;
         $this->pdfConfigCheck = (!empty($this->businessName) && !empty($this->businessAddress)) ? true : false;
-        $this->pdfReceiptsActive = ($this->mmPluginCheck && $this->mmVersionCheck && $this->emailTemplateCheck && $this->pdfConfigCheck) ? true : false;        
+        $this->pdfReceiptsActive = ($this->mmPluginCheck && $this->mmVersionCheck && $this->emailTemplateCheck && $this->pdfConfigCheck && $this->phpVersionCheck) ? true : false;        
         ?>
 <style>
 .mm-ui-button {
@@ -307,7 +308,7 @@ class MemberMouse_PDF_Receipts_Settings
 			style="vertical-align: middle; margin-top: 20px;" />
 	</div>
 	
-	<?php if ($this->mmPluginCheck && $this->mmVersionCheck) { ?>
+	<?php if ($this->mmPluginCheck && $this->mmVersionCheck && $this->phpVersionCheck) { ?>
 	
 	<?php if($this->pdfReceiptsActive) { ?>
 	<div class="mm-navbar" style="margin-bottom:10px;"><ul>
@@ -405,9 +406,15 @@ class MemberMouse_PDF_Receipts_Settings
     <?php  } ?>
     </script>
     
-    <?php } else { ?>
+    <?php } else { 
+        // clear data so plugin won't run
+        update_option("mm-pdf-business-name", "");
+        update_option("mm-pdf-business-address", "");
+    ?>
 	<div class="error" style="padding: 10px; width: 600px;">
-	<?php if(!$this->mmPluginCheck) { ?>
+	<?php if(!$this->phpVersionCheck) { ?> 
+		Your webserver is running PHP <?php echo phpversion(); ?>. This plugin requires a minimum PHP version of 7.1. Please contact your hosting provider and request to be upgraded to a more recent version of PHP.
+	<?php } else if(!$this->mmPluginCheck) { ?>
 		The <a href="https://membermouse.com">MemberMouse plugin</a> must be active in order to use this plugin.
 	<?php } else if(!$this->mmVersionCheck) { ?>
 		MemberMouse 2.4.0 or above is required to use this plugin. <a href="https://hub.membermouse.com/download.php">Download the latest version</a> and 

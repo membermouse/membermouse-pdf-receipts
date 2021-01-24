@@ -95,7 +95,7 @@ class MemberMouse_Receipt
                     unlink($pdfPath);
                 }
             }
-        } catch (Exception $e) {
+        } catch (Error $e) {
             // PDF generation and emailing failed for some reason. Catching error so that it doesn't
             // interfere with the order process
         }
