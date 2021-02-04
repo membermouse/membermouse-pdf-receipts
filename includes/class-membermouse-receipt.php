@@ -160,7 +160,7 @@ class MemberMouse_Receipt
     /**
      * Set Data
      */
-    private function setData($data)
+    protected function setData($data)
     {
         $this->eventType = $data["event_type"];
         $this->member_id = $data['member_id'];
@@ -240,7 +240,7 @@ class MemberMouse_Receipt
     /**
      * Generates PDF HTML
      */
-    private function generatePDFHtml()
+    protected function generatePDFHtml()
     {
         ob_start();
         
