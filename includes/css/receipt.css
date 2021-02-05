@@ -10,7 +10,7 @@ p {
 
 .title-row {
   text-align: center;
-  border-top: 4px solid #066cd2;
+  border-top: 4px solid #333;
   padding-top: 20px;
 }
 
@@ -90,6 +90,6 @@ p {
 .receipt-footer {
   margin-top: 40px;
   text-align: center;
-  border-bottom: 4px solid #066cd2;
+  border-bottom: 4px solid #333;
   padding-bottom: 20px;
 }
