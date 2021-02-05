@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: MemberMouse PDF Receipts
- * Version: 1.0.0
+ * Version: 1.0.1
  * Plugin URI: https://membermouse.com
  * Description: Sends an email receipt with PDF attachment on initial and rebill payments.
  * Author: MemberMouse, LLC
  * Author URI: https://membermouse.com
  * Requires at least: 4.0
- * Tested up to: 5.6
+ * Tested up to: 5.6.1
  *
  * Text Domain: membermouse-pdf-receipts
  * Domain Path: /lang/
