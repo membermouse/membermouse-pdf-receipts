@@ -33,8 +33,9 @@ class MemberMouse_PDF_Receipts_Settings
     private $billingCustomFieldId = "";
     private $businessName = "";
     private $businessAddress = "";
-    private $businessTaxId = "";
-    private $logoDataUri = "";
+    private $borderColor = "";
+    private $hederImageAlign = "";
+    private $headerImageUri = "";
     private $receiptFooterSection1 = "";
     private $receiptFooterSection2 = "";
 
@@ -113,6 +114,7 @@ class MemberMouse_PDF_Receipts_Settings
                     return;
             }
         }
+        add_action( 'admin_print_styles-' . $page, array( $this, 'settings_assets' ) );
     }
 
     /**
@@ -157,6 +159,21 @@ class MemberMouse_PDF_Receipts_Settings
         array_push($links, $settings_link);
         return $links;
     }
+    
+    /**
+     * Load settings JS & CSS
+     *
+     * @return void
+     */
+    public function settings_assets() {
+        
+        // the farbtastic script & styles are needed for the color picker
+        wp_enqueue_style( 'farbtastic' );
+        wp_enqueue_script( 'farbtastic' );
+        
+        wp_register_script( $this->parent->_token . '-settings-js', $this->parent->assets_url . 'js/settings.js', array( 'farbtastic', 'jquery' ), '1.0.0', true );
+        wp_enqueue_script( $this->parent->_token . '-settings-js' );
+    }
 
     /**
      * Load settings page content.
@@ -183,7 +200,9 @@ class MemberMouse_PDF_Receipts_Settings
             delete_option("mm-pdf-email-billing-custom-field-id");
             delete_option("mm-pdf-business-name");
             delete_option("mm-pdf-business-address");
-            delete_option("mm-pdf-logo-data-uri");
+            delete_option("mm-pdf-header-image-uri");
+            delete_option("mm-pdf-header-image-align");
+            delete_option("mm-pdf-border-color");
             delete_option("mm-pdf-business-tax-id");
             delete_option("mm-pdf-footer-section-1");
             delete_option("mm-pdf-footer-section-2");
@@ -250,8 +269,16 @@ class MemberMouse_PDF_Receipts_Settings
                 update_option("mm-pdf-business-tax-id", stripslashes($_POST["mm_business_tax_id"]));
             }
             
-            if (isset($_POST["mm_logo_data_uri"])) {
-                update_option("mm-pdf-logo-data-uri", stripslashes($_POST["mm_logo_data_uri"]));
+            if (isset($_POST["mm_border_color"])) {
+                update_option("mm-pdf-border-color", stripslashes($_POST["mm_border_color"]));
+            }
+            
+            if (isset($_POST["mm_header_image_uri"])) {
+                update_option("mm-pdf-header-image-uri", stripslashes($_POST["mm_header_image_uri"]));
+            }
+            
+            if (isset($_POST["mm_header_image_align"])) {
+                update_option("mm-pdf-header-image-align", stripslashes($_POST["mm_header_image_align"]));
             }
             
             if (isset($_POST["mm_footer_section_1"])) {
@@ -270,7 +297,9 @@ class MemberMouse_PDF_Receipts_Settings
         $this->businessName = get_option("mm-pdf-business-name", false);
         $this->businessAddress = get_option("mm-pdf-business-address", false);
         $this->businessTaxId = get_option("mm-pdf-business-tax-id", false);
-        $this->logoDataUri = get_option("mm-pdf-logo-data-uri", false);
+        $this->borderColor = get_option("mm-pdf-border-color", false);
+        $this->hederImageAlign = get_option("mm-pdf-header-image-align", false);
+        $this->headerImageUri = get_option("mm-pdf-header-image-uri", false);
         $this->receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
         $this->receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         
@@ -281,6 +310,18 @@ class MemberMouse_PDF_Receipts_Settings
         if (empty($this->emailFromId)) {
             $dfltEmployee = MM_Employee::getDefault();
             update_option("mm-pdf-email-from", $dfltEmployee->getId());
+        }
+        
+        if(empty($this->hederImageAlign))
+        {
+            $this->hederImageAlign = "center";
+            update_option("mm-pdf-header-image-align", $this->hederImageAlign);
+        }
+        
+        if(empty($this->borderColor))
+        {
+            $this->borderColor = "#066cd2";
+            update_option("mm-pdf-border-color", $this->borderColor);
         }
         
         $this->emailSubject = get_option("mm-pdf-email-subject", false);
@@ -542,25 +583,48 @@ class MemberMouse_PDF_Receipts_Settings
 						</div>
 						
 						<div style="margin-top:20px;">
-						<p><strong><?php echo _mmpdft("Logo"); ?></strong></p>
+						<p><strong><?php echo _mmpdft("Design Settings"); ?></strong></p>
+						<div style="margin-left:10px;">
+						<p><?php echo _mmpdft("Header Logo/Image"); ?></p>
 						<div style="margin-left:10px;">
 						<p>
 						<a href="https://ezgif.com/image-to-datauri" target="_blank">Generate a Data URI</a> for your logo and paste it below.<br/>
-						It starts with <code>data:image</code>. Don't include any HTML tags. <a href="javascript:jQuery('#mm-pdf-logo-instructions').toggle()">view instructions</a></p>
+						It starts with <code>data:image</code>. Don't include any HTML tags. <a href="javascript:jQuery('#mm-pdf-logo-instructions').toggle()">view instructions</a>
+						</p>
 						<div id="mm-pdf-logo-instructions" style="margin-bottom: 10px; display:none;">
                     		<img
                     			src="<?php echo plugins_url("../assets/images/", __FILE__)."/pdf-logo-instructions.png"; ?>"
                     			style="width:600px; vertical-align: middle;" />
                     	</div>
-						<textarea id="mm-logo-data-uri" name="mm_logo_data_uri"
+						<textarea id="mm-header-image-uri" name="mm_header_image_uri"
 							style="width: 500px; font-family: courier; font-size: 11px;"
-							rows="4"><?php echo htmlentities($this->logoDataUri, ENT_QUOTES, 'UTF-8', true); ?></textarea>
-						<?php if(!empty($this->logoDataUri)) { ?>
+							rows="4"><?php echo htmlentities($this->headerImageUri, ENT_QUOTES, 'UTF-8', true); ?></textarea>
+						<?php if(!empty($this->headerImageUri)) { ?>
                         <div style="margin-top:10px; margin-bottom: 10px;">
                         	Preview:<br/>
-                        	<img src="<?php echo $this->logoDataUri; ?>" alt="" />
+                        	<img src="<?php echo $this->headerImageUri; ?>" alt="" />
                         </div>
                         <?php } ?>
+                        </div>
+                        
+                        <p><?php echo _mmpdft("Header Logo/Image Alignment"); ?></p>
+                        <div style="margin-bottom:20px;">
+                        <input type="radio" id="mm-header-image-align-left" name="mm_header_image_align" value="left" <?php if($this->hederImageAlign == "left") { echo "checked"; }?>>
+                        <label for="male">Left</label>
+                        &nbsp;
+                        <input type="radio" id="mm-header-image-align-center" name="mm_header_image_align" value="center" <?php if($this->hederImageAlign == "center") { echo "checked"; }?>>
+                        <label for="female">Center</label>
+                        &nbsp;
+                        <input type="radio" id="mm-header-image-align-right" name="mm_header_image_align" value="right" <?php if($this->hederImageAlign == "right") { echo "checked"; }?>>
+                        <label for="other">Right</label>
+                        </div>
+                        
+                        <p><?php echo _mmpdft("Border Color"); ?></p>
+						
+						<div class="color-picker" style="position:relative;">
+                			<input type="text" name="mm_border_color" class="color" value="<?php esc_attr_e( $this->borderColor ); ?>" />
+                			<div style="position:absolute;background:#FFF;z-index:99;border-radius:100%;" class="colorpicker"></div>
+                		</div>
                 		</div>
                 		</div>
 						

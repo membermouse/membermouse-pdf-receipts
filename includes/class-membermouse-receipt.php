@@ -247,7 +247,9 @@ class MemberMouse_Receipt
         $businessName = get_option("mm-pdf-business-name", false);
         $businessAddress = get_option("mm-pdf-business-address", false);
         $businessTaxId = get_option("mm-pdf-business-tax-id", false);
-        $logoDataUri = get_option("mm-pdf-logo-data-uri", false);
+        $headerImageUri = get_option("mm-pdf-header-image-uri", false);
+        $headerImageAlign = get_option("mm-pdf-header-image-align", false);
+        $borderColor = get_option("mm-pdf-border-color", false);
         $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
         $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         ?>
@@ -266,12 +268,12 @@ class MemberMouse_Receipt
 
 <body>
 	<div class="pdf-container">
-		<?php if(!empty($logoDataUri)) { ?>
-		<div style="margin-bottom: 10px;">
-    		<img src="<?php echo $logoDataUri; ?>" alt="" />
+		<?php if(!empty($headerImageUri)) { ?>
+		<div style="margin-bottom: 10px; <?php if(!empty($headerImageAlign)) { ?>text-align:<?php echo $headerImageAlign; ?>;<?php } ?>">
+    		<img src="<?php echo $headerImageUri; ?>" alt="" />
     	</div>
     	<?php } ?>
-		<div class="row title-row">
+		<div class="row title-row" <?php if(!empty($borderColor)) { ?>style="border-top: 4px solid <?php echo $borderColor; ?>"<?php } ?>>
 			<p>
 				<?php if($this->isTest) { ?>
 				<strong><span style="color:#c00"><?php echo _mmpdft("TEST RECEIPT"); ?></span></strong><br/>
@@ -372,7 +374,7 @@ class MemberMouse_Receipt
 		<div class="receipt-bottom">
 			<?php echo $receiptFooterSection1; ?>
 		</div>
-		<div class="receipt-footer">
+		<div class="receipt-footer" <?php if(!empty($borderColor)) { ?>style="border-bottom: 4px solid <?php echo $borderColor; ?>"<?php } ?>>
 			<?php echo $receiptFooterSection2; ?>
 		</div>
 
