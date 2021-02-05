@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: MemberMouse PDF Receipts
- * Version: 1.0.1
+ * Version: 1.1.0
  * Plugin URI: https://membermouse.com
  * Description: Sends an email receipt with PDF attachment on initial and rebill payments.
  * Author: MemberMouse, LLC
