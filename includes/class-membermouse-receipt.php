@@ -247,6 +247,7 @@ class MemberMouse_Receipt
         $businessName = get_option("mm-pdf-business-name", false);
         $businessAddress = get_option("mm-pdf-business-address", false);
         $businessTaxId = get_option("mm-pdf-business-tax-id", false);
+        $logoDataUri = get_option("mm-pdf-logo-data-uri", false);
         $receiptFooterSection1 = get_option("mm-pdf-footer-section-1", false);
         $receiptFooterSection2 = get_option("mm-pdf-footer-section-2", false);
         ?>
@@ -265,6 +266,11 @@ class MemberMouse_Receipt
 
 <body>
 	<div class="pdf-container">
+		<?php if(!empty($logoDataUri)) { ?>
+		<div style="margin-bottom: 10px;">
+    		<img src="<?php echo $logoDataUri; ?>" alt="" />
+    	</div>
+    	<?php } ?>
 		<div class="row title-row">
 			<p>
 				<?php if($this->isTest) { ?>
