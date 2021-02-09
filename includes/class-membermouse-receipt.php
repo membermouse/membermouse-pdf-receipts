@@ -301,7 +301,7 @@ class MemberMouse_Receipt
                 	<?php if($this->address2) : ?>
                   	<div><?php echo $this->address2; ?></div>
                 	<?php endif; ?>
-                	<div><?php echo $this->city; ?> <?php echo ($this->city && $this->state)?",":""; ?> <?php echo $this->state; ?> <?php echo $this->address1?$this->zip:""; ?></div>
+                	<div><?php echo $this->city; ?><?php echo ($this->city && $this->state)?",":""; ?> <?php echo $this->state; ?> <?php echo $this->address1?$this->zip:""; ?></div>
                 <?php endif; ?>
               </div>
 				<div class="receipt-date">
