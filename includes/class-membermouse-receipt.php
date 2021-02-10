@@ -32,6 +32,7 @@ class MemberMouse_Receipt
     private $order_shipping = "";
     private $order_total = "";
     private $order_number = "";
+    private $order_date;
     private $message = "";
 
     /**
@@ -56,7 +57,7 @@ class MemberMouse_Receipt
     public function __construct()
     {
         $this->plugin_name = 'membermouse-pdf-receipts';
-        $this->today = date('M. j, Y');
+        $this->order_date = date('M. j, Y');
     }
 
     /**
@@ -180,6 +181,16 @@ class MemberMouse_Receipt
         $this->order_shipping = $data['order_shipping'];
         $this->order_total = $data['order_total'];
         $this->order_number = $data['order_number'];
+        
+        if(isset($data["order_date"]))
+        {
+            $this->order_date = date('M. j, Y', strtotime($data["order_date"]));
+        }
+        else 
+        {
+            $this->order_date = date('M. j, Y');
+        }
+        
         $this->order_currency = isset($data['order_currency']) ? $data['order_currency'] : "";
         
         $billingCustomFieldId = get_option("mm-pdf-email-billing-custom-field-id", false);
@@ -306,7 +317,7 @@ class MemberMouse_Receipt
               </div>
 				<div class="receipt-date">
 					<div>
-						<strong><?php echo _mmpdft("DATE PAID"); ?>:</strong> <?php echo $this->today; ?></div>
+						<strong><?php echo _mmpdft("DATE PAID"); ?>:</strong> <?php echo $this->order_date; ?></div>
 				</div>
 			</div>
             <?php if(!empty($this->order_currency)) { ?>
